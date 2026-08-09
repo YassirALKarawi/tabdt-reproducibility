@@ -534,7 +534,7 @@ def plot_primary(results: dict[str, object], output_dir: Path) -> None:
         pad_inches=0.025,
         metadata={
             "Title": "XJTU-SY external RUL validation",
-            "Author": "Yassir Amin Ahmed Al-Karawi and Hamed Al-Raweshidy",
+            "Author": "Yassir Ameen Al-Karawi and Hamed Al-Raweshidy",
             "Creator": "TABDT reproducibility package",
             "CreationDate": fixed_time,
             "ModDate": fixed_time,

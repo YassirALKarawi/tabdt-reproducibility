@@ -8,7 +8,7 @@ regular submission to IEEE Transactions on Industrial Cyber-Physical Systems
 
 ## Authors
 
-1. Yassir Amin Ahmed Al-Karawi - first author
+1. Yassir Ameen Al-Karawi - first author
 2. Hamed Al-Raweshidy - second and corresponding author
 
 ## Included

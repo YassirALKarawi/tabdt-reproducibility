@@ -15,7 +15,7 @@
 [**Read the manuscript**](main.pdf) · [**Browse the figures**](#paper-figures) · [**Reproduce the results**](#reproduce-the-results) · [**Cite the work**](#citation)
 
 **Manuscript target:** *IEEE Transactions on Industrial Cyber-Physical Systems (TICPS)*<br>
-**Authors:** Yassir Amin Ahmed Al-Karawi and Hamed Al-Raweshidy · **Corresponding author:** Hamed Al-Raweshidy
+**Authors:** Yassir Ameen Al-Karawi and Hamed Al-Raweshidy · **Corresponding author:** Hamed Al-Raweshidy
 
 <br>
 
@@ -191,9 +191,9 @@ sha256sum -c XJTU_SHA256SUMS.txt
 <summary><b>Show the v19 XJTU-SY hashes</b></summary>
 
 ```text
-9401b421a852a83ccf5d0260f49089ec0ad8648c4f05449d594866fa0693bd05  xjtu_validation.py
+0b21b49826dd09d2724c6c64ccc95b5b549dd7b8181b38aa944a721ea0f8e39e  xjtu_validation.py
 2ac720e6525d15aa8c946fd7cd75a8ea109df168945f435d8376e26d2d47d4b3  xjtu_results.json
-b582700541cd83dca9200113b9da3581063273ddcd814c56aae8dcebb37afec9  figs/fig6_xjtu.pdf
+b904248a4aa8f02857f377157b7f0a0ff0334515fce7a3ab765aad0ff6fbd7fb  figs/fig6_xjtu.pdf
 c8c2bc48c9c0b819aad1618f50fa4604d15bda0c5d56fdf5bf638b8a27f53cc7  figs/fig6_xjtu.png
 ```
 
@@ -202,7 +202,7 @@ c8c2bc48c9c0b819aad1618f50fa4604d15bda0c5d56fdf5bf638b8a27f53cc7  figs/fig6_xjtu
 ## Manuscript and authorship record
 
 - **Target venue:** *IEEE Transactions on Industrial Cyber-Physical Systems (TICPS)*.
-- **Authors:** Yassir Amin Ahmed Al-Karawi and Hamed Al-Raweshidy; no additional authors are listed in the manuscript or archival metadata.
+- **Authors:** Yassir Ameen Al-Karawi and Hamed Al-Raweshidy; no additional authors are listed in the manuscript or archival metadata.
 - **Corresponding author:** Hamed Al-Raweshidy.
 - **Code availability:** the manuscript links directly to this public repository.
 
@@ -212,7 +212,7 @@ GitHub exposes the repository citation through [`CITATION.cff`](CITATION.cff), w
 
 ```bibtex
 @unpublished{alkarawi2026tabdt,
-  author = {Yassir Amin Ahmed Al-Karawi and Hamed Al-Raweshidy},
+  author = {Yassir Ameen Al-Karawi and Hamed Al-Raweshidy},
   title  = {Trust and Age Bayesian Digital Twins: Provable Predictive Maintenance under Industrial Network Impairments},
   year   = {2026},
   note   = {Manuscript prepared for IEEE Transactions on Industrial Cyber-Physical Systems and accompanying reproducibility package},
@@ -222,7 +222,7 @@ GitHub exposes the repository citation through [`CITATION.cff`](CITATION.cff), w
 
 ## Authors
 
-- **Yassir Amin Ahmed Al-Karawi** — first author · Department of Communications Engineering, College of Engineering, University of Diyala, Iraq · [ORCID](https://orcid.org/0000-0003-2959-3893) · [GitHub](https://github.com/YassirALKarawi)
+- **Yassir Ameen Al-Karawi** — first author · Department of Communications Engineering, College of Engineering, University of Diyala, Iraq · [ORCID](https://orcid.org/0000-0003-2959-3893) · [GitHub](https://github.com/YassirALKarawi)
 - **Hamed Al-Raweshidy** — Wireless Networks and Communications Centre, Brunel University London, UK · [ORCID](https://orcid.org/0000-0002-3702-8192) · corresponding author
 
 ## Licensing

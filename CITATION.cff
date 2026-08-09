@@ -21,7 +21,7 @@ keywords:
   - uncertainty quantification
 authors:
   - family-names: "Al-Karawi"
-    given-names: "Yassir Amin Ahmed"
+    given-names: "Yassir Ameen"
     affiliation: "Department of Communications Engineering, College of Engineering, University of Diyala, Iraq"
     orcid: "https://orcid.org/0000-0003-2959-3893"
   - family-names: "Al-Raweshidy"
@@ -35,7 +35,7 @@ preferred-citation:
   url: "https://github.com/YassirALKarawi/tabdt-reproducibility"
   authors:
     - family-names: "Al-Karawi"
-      given-names: "Yassir Amin Ahmed"
+      given-names: "Yassir Ameen"
       affiliation: "Department of Communications Engineering, College of Engineering, University of Diyala, Iraq"
       orcid: "https://orcid.org/0000-0003-2959-3893"
     - family-names: "Al-Raweshidy"

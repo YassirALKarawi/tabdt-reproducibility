@@ -9,9 +9,13 @@
 [![Reproducibility](https://img.shields.io/badge/reproducibility-v19-1f8a70)](XJTU_SHA256SUMS.txt)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](requirements.txt)
 [![IEEE manuscript](https://img.shields.io/badge/IEEE-manuscript-00629B)](main.pdf)
+[![Target venue](https://img.shields.io/badge/target-IEEE_TICPS-5b2c83)](https://www.ieee-ies.org/pubs/transactions-on-industrial-cyberphysical-systems)
 [![External validation](https://img.shields.io/badge/XJTU--SY-15_bearings-b44964)](#external-xjtu-sy-validation)
 
 [**Read the manuscript**](main.pdf) · [**Browse the figures**](#paper-figures) · [**Reproduce the results**](#reproduce-the-results) · [**Cite the work**](#citation)
+
+**Manuscript target:** *IEEE Transactions on Industrial Cyber-Physical Systems (TICPS)*<br>
+**Authors:** Yassir Amin Ahmed Al-Karawi and Hamed Al-Raweshidy · **Corresponding author:** Hamed Al-Raweshidy
 
 <br>
 
@@ -29,7 +33,7 @@
 
 Industrial digital twins often assume synchronized and equally reliable measurements. TABDT removes that assumption. It models geometric packet delay with a finite deadline, packet reordering, deadline loss, and heterogeneous sensor credibility. Arrived observations are aligned to the current time, weighted by trust and age, and fused with a random-effects Wiener degradation model.
 
-The framework connects estimation to maintenance through a closed-form network certificate and a synchronization-aware preventive-maintenance limit. The repository contains the synchronized **v19** manuscript, deterministic simulation and external-validation code, machine-readable results, integrity hashes, and publication-quality figures in both vector PDF and 400-dpi PNG formats.
+The framework connects estimation to maintenance through a closed-form network certificate and a synchronization-aware preventive-maintenance limit. The repository contains the synchronized **v19** manuscript prepared for *IEEE Transactions on Industrial Cyber-Physical Systems*, deterministic simulation and external-validation code, machine-readable results, integrity hashes, and publication-quality figures in both vector PDF and 400-dpi PNG formats.
 
 ## Results at a glance
 
@@ -158,6 +162,8 @@ The single-channel test holds a causal tenfold condition-baseline health-to-RUL 
 | [`XJTU_SHA256SUMS.txt`](XJTU_SHA256SUMS.txt) | Machine-checkable v19 integrity hashes |
 | [`requirements.txt`](requirements.txt) | Tested Python dependencies |
 | [`CITATION.cff`](CITATION.cff) | Citation metadata for GitHub and reference managers |
+| [`.zenodo.json`](.zenodo.json) | Zenodo release metadata with the two manuscript authors |
+| [`LICENSE`](LICENSE) / [`LICENSES.md`](LICENSES.md) | Software license and file-specific rights statement |
 
 ## Validation and integrity
 
@@ -193,24 +199,35 @@ c8c2bc48c9c0b819aad1618f50fa4604d15bda0c5d56fdf5bf638b8a27f53cc7  figs/fig6_xjtu
 
 </details>
 
+## Manuscript and authorship record
+
+- **Target venue:** *IEEE Transactions on Industrial Cyber-Physical Systems (TICPS)*.
+- **Authors:** Yassir Amin Ahmed Al-Karawi and Hamed Al-Raweshidy; no additional authors are listed in the manuscript or archival metadata.
+- **Corresponding author:** Hamed Al-Raweshidy.
+- **Code availability:** the manuscript links directly to this public repository.
+
 ## Citation
 
-GitHub exposes the repository citation through [`CITATION.cff`](CITATION.cff). Until final publication metadata and a DOI are available, cite the manuscript as:
+GitHub exposes the repository citation through [`CITATION.cff`](CITATION.cff), while [`.zenodo.json`](.zenodo.json) supplies matching metadata for release archiving. Until final publication metadata and a DOI are available, cite the manuscript as:
 
 ```bibtex
 @unpublished{alkarawi2026tabdt,
   author = {Yassir Amin Ahmed Al-Karawi and Hamed Al-Raweshidy},
   title  = {Trust and Age Bayesian Digital Twins: Provable Predictive Maintenance under Industrial Network Impairments},
   year   = {2026},
-  note   = {Manuscript and reproducibility package},
+  note   = {Manuscript prepared for IEEE Transactions on Industrial Cyber-Physical Systems and accompanying reproducibility package},
   url    = {https://github.com/YassirALKarawi/tabdt-reproducibility}
 }
 ```
 
 ## Authors
 
-- **Yassir Amin Ahmed Al-Karawi** — Department of Communications Engineering, College of Engineering, University of Diyala, Iraq · [ORCID](https://orcid.org/0000-0003-2959-3893) · [GitHub](https://github.com/YassirALKarawi)
+- **Yassir Amin Ahmed Al-Karawi** — first author · Department of Communications Engineering, College of Engineering, University of Diyala, Iraq · [ORCID](https://orcid.org/0000-0003-2959-3893) · [GitHub](https://github.com/YassirALKarawi)
 - **Hamed Al-Raweshidy** — Wireless Networks and Communications Centre, Brunel University London, UK · [ORCID](https://orcid.org/0000-0002-3702-8192) · corresponding author
+
+## Licensing
+
+The Python source code is released under the [MIT License](LICENSE). The manuscript and paper figures retain the authors' publication rights; file-specific terms and the excluded XJTU-SY dataset status are documented in [`LICENSES.md`](LICENSES.md).
 
 ---
 

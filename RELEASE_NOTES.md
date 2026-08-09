@@ -1,5 +1,7 @@
 # TABDT reproducibility package v19
 
+**Permanent archive:** [Zenodo DOI 10.5281/zenodo.21861066](https://doi.org/10.5281/zenodo.21861066)
+
 This release archives the complete reproducibility package accompanying the
 two-author manuscript "Trust and Age Bayesian Digital Twins: Provable
 Predictive Maintenance under Industrial Network Impairments," prepared for

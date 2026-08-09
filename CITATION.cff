@@ -1,12 +1,13 @@
 cff-version: 1.2.0
-message: "If you use this software or results, please cite the accompanying manuscript prepared for IEEE Transactions on Industrial Cyber-Physical Systems."
-title: "TABDT: Trust and Age Bayesian Digital Twins reproducibility package"
+message: "If you use this software or results, please cite the archived Zenodo v19 reproducibility package."
+title: "TABDT: Trust and Age Bayesian Digital Twins Reproducibility Package"
 type: software
 version: "v19"
 date-released: 2026-08-09
+doi: "10.5281/zenodo.21861066"
 license: MIT
 repository-code: "https://github.com/YassirALKarawi/tabdt-reproducibility"
-url: "https://github.com/YassirALKarawi/tabdt-reproducibility"
+url: "https://doi.org/10.5281/zenodo.21861066"
 abstract: >-
   Deterministic simulation and external XJTU-SY validation package for trust
   and age Bayesian digital twins used in predictive maintenance under delayed,
@@ -28,17 +29,3 @@ authors:
     given-names: "Hamed"
     affiliation: "Wireless Networks and Communications Centre, Brunel University London, United Kingdom"
     orcid: "https://orcid.org/0000-0002-3702-8192"
-preferred-citation:
-  type: article
-  title: "Trust and Age Bayesian Digital Twins: Provable Predictive Maintenance under Industrial Network Impairments"
-  year: 2026
-  url: "https://github.com/YassirALKarawi/tabdt-reproducibility"
-  authors:
-    - family-names: "Al-Karawi"
-      given-names: "Yassir Ameen"
-      affiliation: "Department of Communications Engineering, College of Engineering, University of Diyala, Iraq"
-      orcid: "https://orcid.org/0000-0003-2959-3893"
-    - family-names: "Al-Raweshidy"
-      given-names: "Hamed"
-      affiliation: "Wireless Networks and Communications Centre, Brunel University London, United Kingdom"
-      orcid: "https://orcid.org/0000-0002-3702-8192"

@@ -1,0 +1,785 @@
+{
+ "all_folds": [
+  {
+   "baseline_horizontal_peak": 2.934026718139645,
+   "bearing": "Bearing1_1",
+   "calibrated_drift_variance": 7.007045086137682e-05,
+   "calibrated_health_drift": 0.011397007576386991,
+   "calibrated_process_variance": 0.010759807212357093,
+   "calibrated_residual_between_variance": 0.04782135421179606,
+   "calibrated_residual_variance": 0.08084450872571333,
+   "calibrated_residual_within_variance": 0.02106781596096826,
+   "calibration_bearings": [
+    "Bearing1_2",
+    "Bearing1_3",
+    "Bearing1_4",
+    "Bearing1_5"
+   ],
+   "condition": 1,
+   "eligible_long_life_sensitivity": true,
+   "evaluation_count": 3400,
+   "predictive_between_bearing_factor": 1.25,
+   "records": 123,
+   "rmse_percentage_points": {
+    "B2": 34.79064465698925,
+    "B3": 44.17835507966409,
+    "TABDT": 21.554709660250932
+   },
+   "squared_error": {
+    "B2": 411.5322449206242,
+    "B3": 663.5871995652598,
+    "TABDT": 157.96587290282304
+   },
+   "tabdt_interval_coverage": 1.0,
+   "tabdt_interval_coverage_by_between_factor": {
+    "1": 0.9994117647058823,
+    "1.25": 1.0,
+    "1.5": 1.0,
+    "2": 1.0
+   },
+   "tabdt_interval_hits": 3400,
+   "tabdt_interval_hits_by_between_factor": {
+    "1": 3398,
+    "1.25": 3400,
+    "1.5": 3400,
+    "2": 3400
+   }
+  },
+  {
+   "baseline_horizontal_peak": 2.26050019264221,
+   "bearing": "Bearing1_2",
+   "calibrated_drift_variance": 5.8202144548848154e-05,
+   "calibrated_health_drift": 0.012379462120325573,
+   "calibrated_process_variance": 0.010172045422337964,
+   "calibrated_residual_between_variance": 0.03447970037511582,
+   "calibrated_residual_variance": 0.06621826589881996,
+   "calibrated_residual_within_variance": 0.023118640429925178,
+   "calibration_bearings": [
+    "Bearing1_1",
+    "Bearing1_3",
+    "Bearing1_4",
+    "Bearing1_5"
+   ],
+   "condition": 1,
+   "eligible_long_life_sensitivity": true,
+   "evaluation_count": 4520,
+   "predictive_between_bearing_factor": 1.25,
+   "records": 161,
+   "rmse_percentage_points": {
+    "B2": 18.448624620274963,
+    "B3": 30.10472554362132,
+    "TABDT": 21.008432666609416
+   },
+   "squared_error": {
+    "B2": 153.8389911716766,
+    "B3": 409.64511402565824,
+    "TABDT": 199.49211788457268
+   },
+   "tabdt_interval_coverage": 0.9982300884955753,
+   "tabdt_interval_coverage_by_between_factor": {
+    "1": 0.9971238938053097,
+    "1.25": 0.9982300884955753,
+    "1.5": 0.9986725663716814,
+    "2": 0.9995575221238938
+   },
+   "tabdt_interval_hits": 4512,
+   "tabdt_interval_hits_by_between_factor": {
+    "1": 4507,
+    "1.25": 4512,
+    "1.5": 4514,
+    "2": 4518
+   }
+  },
+  {
+   "baseline_horizontal_peak": 3.2034099102020246,
+   "bearing": "Bearing1_3",
+   "calibrated_drift_variance": 5.6823832725530845e-05,
+   "calibrated_health_drift": 0.012388758994984827,
+   "calibrated_process_variance": 0.011458592063068913,
+   "calibrated_residual_between_variance": 0.03925448895363948,
+   "calibrated_residual_variance": 0.07035217795420837,
+   "calibrated_residual_within_variance": 0.021284066762159014,
+   "calibration_bearings": [
+    "Bearing1_1",
+    "Bearing1_2",
+    "Bearing1_4",
+    "Bearing1_5"
+   ],
+   "condition": 1,
+   "eligible_long_life_sensitivity": true,
+   "evaluation_count": 4400,
+   "predictive_between_bearing_factor": 1.25,
+   "records": 158,
+   "rmse_percentage_points": {
+    "B2": 50.710854123086705,
+    "B3": 55.04967414968578,
+    "TABDT": 35.64230284701749
+   },
+   "squared_error": {
+    "B2": 1131.4999193929111,
+    "B3": 1333.4053145540965,
+    "TABDT": 558.9644509849451
+   },
+   "tabdt_interval_coverage": 0.9488636363636364,
+   "tabdt_interval_coverage_by_between_factor": {
+    "1": 0.9334090909090909,
+    "1.25": 0.9488636363636364,
+    "1.5": 0.9634090909090909,
+    "2": 0.9831818181818182
+   },
+   "tabdt_interval_hits": 4175,
+   "tabdt_interval_hits_by_between_factor": {
+    "1": 4107,
+    "1.25": 4175,
+    "1.5": 4239,
+    "2": 4326
+   }
+  },
+  {
+   "baseline_horizontal_peak": 3.2034099102020246,
+   "bearing": "Bearing1_4",
+   "calibrated_drift_variance": 7.445433028161094e-05,
+   "calibrated_health_drift": 0.010957283541420566,
+   "calibrated_process_variance": 0.008952960818705768,
+   "calibrated_residual_between_variance": 0.027542226571826103,
+   "calibrated_residual_variance": 0.049010661121675084,
+   "calibrated_residual_within_variance": 0.014582877906892455,
+   "calibration_bearings": [
+    "Bearing1_1",
+    "Bearing1_2",
+    "Bearing1_3",
+    "Bearing1_5"
+   ],
+   "condition": 1,
+   "eligible_long_life_sensitivity": true,
+   "evaluation_count": 3360,
+   "predictive_between_bearing_factor": 1.25,
+   "records": 122,
+   "rmse_percentage_points": {
+    "B2": 58.33407344038969,
+    "B3": 58.38544955925109,
+    "TABDT": 45.32859994061219
+   },
+   "squared_error": {
+    "B2": 1143.3623457139893,
+    "B3": 1145.3772019992468,
+    "TABDT": 690.3731427855588
+   },
+   "tabdt_interval_coverage": 0.787797619047619,
+   "tabdt_interval_coverage_by_between_factor": {
+    "1": 0.7729166666666667,
+    "1.25": 0.787797619047619,
+    "1.5": 0.799404761904762,
+    "2": 0.8241071428571428
+   },
+   "tabdt_interval_hits": 2647,
+   "tabdt_interval_hits_by_between_factor": {
+    "1": 2597,
+    "1.25": 2647,
+    "1.5": 2686,
+    "2": 2769
+   }
+  },
+  {
+   "baseline_horizontal_peak": 2.26050019264221,
+   "bearing": "Bearing1_5",
+   "calibrated_drift_variance": 3.286232259132395e-06,
+   "calibrated_health_drift": 0.008372109179149103,
+   "calibrated_process_variance": 0.01191577803188985,
+   "calibrated_residual_between_variance": 0.0865782612287167,
+   "calibrated_residual_variance": 0.13277460951824613,
+   "calibrated_residual_within_variance": 0.024551782982350254,
+   "calibration_bearings": [
+    "Bearing1_1",
+    "Bearing1_2",
+    "Bearing1_3",
+    "Bearing1_4"
+   ],
+   "condition": 1,
+   "eligible_long_life_sensitivity": false,
+   "evaluation_count": 1400,
+   "predictive_between_bearing_factor": 1.25,
+   "records": 52,
+   "rmse_percentage_points": {
+    "B2": 46.9400762315013,
+    "B3": 53.83574778873399,
+    "TABDT": 37.77800404440843
+   },
+   "squared_error": {
+    "B2": 308.47190592668153,
+    "B3": 405.76028359610467,
+    "TABDT": 199.80486254110764
+   },
+   "tabdt_interval_coverage": 1.0,
+   "tabdt_interval_coverage_by_between_factor": {
+    "1": 1.0,
+    "1.25": 1.0,
+    "1.5": 1.0,
+    "2": 1.0
+   },
+   "tabdt_interval_hits": 1400,
+   "tabdt_interval_hits_by_between_factor": {
+    "1": 1400,
+    "1.25": 1400,
+    "1.5": 1400,
+    "2": 1400
+   }
+  },
+  {
+   "baseline_horizontal_peak": 3.6472201347351,
+   "bearing": "Bearing2_1",
+   "calibrated_drift_variance": 4.0866825858412735e-05,
+   "calibrated_health_drift": 0.006781304514025515,
+   "calibrated_process_variance": 0.0032468913013852874,
+   "calibrated_residual_between_variance": 0.00658355774277065,
+   "calibrated_residual_variance": 0.022004272287848216,
+   "calibrated_residual_within_variance": 0.013774825109384903,
+   "calibration_bearings": [
+    "Bearing2_2",
+    "Bearing2_3",
+    "Bearing2_4",
+    "Bearing2_5"
+   ],
+   "condition": 2,
+   "eligible_long_life_sensitivity": true,
+   "evaluation_count": 13760,
+   "predictive_between_bearing_factor": 1.25,
+   "records": 491,
+   "rmse_percentage_points": {
+    "B2": 58.61496639693892,
+    "B3": 58.61496639693892,
+    "TABDT": 50.48348273368079
+   },
+   "squared_error": {
+    "B2": 4727.542857142847,
+    "B3": 4727.542857142847,
+    "TABDT": 3506.84887179646
+   },
+   "tabdt_interval_coverage": 0.47747093023255816,
+   "tabdt_interval_coverage_by_between_factor": {
+    "1": 0.4696220930232558,
+    "1.25": 0.47747093023255816,
+    "1.5": 0.48430232558139535,
+    "2": 0.500218023255814
+   },
+   "tabdt_interval_hits": 6570,
+   "tabdt_interval_hits_by_between_factor": {
+    "1": 6462,
+    "1.25": 6570,
+    "1.5": 6664,
+    "2": 6883
+   }
+  },
+  {
+   "baseline_horizontal_peak": 3.30539941787719,
+   "bearing": "Bearing2_2",
+   "calibrated_drift_variance": 5.757471090243253e-05,
+   "calibrated_health_drift": 0.006191644011157266,
+   "calibrated_process_variance": 0.0021708477213624165,
+   "calibrated_residual_between_variance": 0.018017570028137253,
+   "calibrated_residual_variance": 0.04488031309089559,
+   "calibrated_residual_within_variance": 0.022358350555724025,
+   "calibration_bearings": [
+    "Bearing2_1",
+    "Bearing2_3",
+    "Bearing2_4",
+    "Bearing2_5"
+   ],
+   "condition": 2,
+   "eligible_long_life_sensitivity": true,
+   "evaluation_count": 4520,
+   "predictive_between_bearing_factor": 1.25,
+   "records": 161,
+   "rmse_percentage_points": {
+    "B2": 37.417128181820416,
+    "B3": 46.91028033411073,
+    "TABDT": 29.11284692670729
+   },
+   "squared_error": {
+    "B2": 632.8187495814005,
+    "B3": 994.659629263235,
+    "TABDT": 383.09615099240636
+   },
+   "tabdt_interval_coverage": 0.9265486725663716,
+   "tabdt_interval_coverage_by_between_factor": {
+    "1": 0.9137168141592921,
+    "1.25": 0.9265486725663716,
+    "1.5": 0.9384955752212389,
+    "2": 0.9599557522123894
+   },
+   "tabdt_interval_hits": 4188,
+   "tabdt_interval_hits_by_between_factor": {
+    "1": 4130,
+    "1.25": 4188,
+    "1.5": 4242,
+    "2": 4339
+   }
+  },
+  {
+   "baseline_horizontal_peak": 3.6472201347351,
+   "bearing": "Bearing2_3",
+   "calibrated_drift_variance": 3.704696075506569e-05,
+   "calibrated_health_drift": 0.007065379113765017,
+   "calibrated_process_variance": 0.0026906842947534036,
+   "calibrated_residual_between_variance": 0.015475107840785887,
+   "calibrated_residual_variance": 0.04056858377990056,
+   "calibrated_residual_within_variance": 0.0212246989789182,
+   "calibration_bearings": [
+    "Bearing2_1",
+    "Bearing2_2",
+    "Bearing2_4",
+    "Bearing2_5"
+   ],
+   "condition": 2,
+   "eligible_long_life_sensitivity": true,
+   "evaluation_count": 14880,
+   "predictive_between_bearing_factor": 1.25,
+   "records": 533,
+   "rmse_percentage_points": {
+    "B2": 44.39650382259512,
+    "B3": 47.768261537869904,
+    "TABDT": 35.41366281575601
+   },
+   "squared_error": {
+    "B2": 2932.921732884519,
+    "B3": 3395.328533801308,
+    "TABDT": 1866.1417408737534
+   },
+   "tabdt_interval_coverage": 0.7681451612903226,
+   "tabdt_interval_coverage_by_between_factor": {
+    "1": 0.7478494623655914,
+    "1.25": 0.7681451612903226,
+    "1.5": 0.7874327956989248,
+    "2": 0.8257392473118279
+   },
+   "tabdt_interval_hits": 11430,
+   "tabdt_interval_hits_by_between_factor": {
+    "1": 11128,
+    "1.25": 11430,
+    "1.5": 11717,
+    "2": 12287
+   }
+  },
+  {
+   "baseline_horizontal_peak": 2.2406697273254297,
+   "bearing": "Bearing2_4",
+   "calibrated_drift_variance": 5.961892119817117e-06,
+   "calibrated_health_drift": 0.003938728636892315,
+   "calibrated_process_variance": 0.0038640937127244943,
+   "calibrated_residual_between_variance": 0.04739972696459153,
+   "calibrated_residual_variance": 0.08442965101066194,
+   "calibrated_residual_within_variance": 0.02517999230492253,
+   "calibration_bearings": [
+    "Bearing2_1",
+    "Bearing2_2",
+    "Bearing2_3",
+    "Bearing2_5"
+   ],
+   "condition": 2,
+   "eligible_long_life_sensitivity": false,
+   "evaluation_count": 1120,
+   "predictive_between_bearing_factor": 1.25,
+   "records": 42,
+   "rmse_percentage_points": {
+    "B2": 46.66916804851074,
+    "B3": 53.646728719961665,
+    "TABDT": 42.38794379855474
+   },
+   "squared_error": {
+    "B2": 243.93725959009518,
+    "B3": 322.33280826355394,
+    "TABDT": 201.23463130057675
+   },
+   "tabdt_interval_coverage": 0.8348214285714286,
+   "tabdt_interval_coverage_by_between_factor": {
+    "1": 0.8133928571428571,
+    "1.25": 0.8348214285714286,
+    "1.5": 0.8482142857142857,
+    "2": 0.8883928571428571
+   },
+   "tabdt_interval_hits": 935,
+   "tabdt_interval_hits_by_between_factor": {
+    "1": 911,
+    "1.25": 935,
+    "1.5": 950,
+    "2": 995
+   }
+  },
+  {
+   "baseline_horizontal_peak": 2.2406697273254297,
+   "bearing": "Bearing2_5",
+   "calibrated_drift_variance": 0.00013882384502829942,
+   "calibrated_health_drift": 0.009832948433480693,
+   "calibrated_process_variance": 0.004000412608401362,
+   "calibrated_residual_between_variance": 0.028329497491843072,
+   "calibrated_residual_variance": 0.06169032833743136,
+   "calibrated_residual_within_variance": 0.026278456472627523,
+   "calibration_bearings": [
+    "Bearing2_1",
+    "Bearing2_2",
+    "Bearing2_3",
+    "Bearing2_4"
+   ],
+   "condition": 2,
+   "eligible_long_life_sensitivity": true,
+   "evaluation_count": 9480,
+   "predictive_between_bearing_factor": 1.25,
+   "records": 339,
+   "rmse_percentage_points": {
+    "B2": 18.21960574970671,
+    "B3": 25.367713016270834,
+    "TABDT": 13.676884158943084
+   },
+   "squared_error": {
+    "B2": 314.6924239236591,
+    "B3": 610.0577787647311,
+    "TABDT": 177.33018796169657
+   },
+   "tabdt_interval_coverage": 1.0,
+   "tabdt_interval_coverage_by_between_factor": {
+    "1": 1.0,
+    "1.25": 1.0,
+    "1.5": 1.0,
+    "2": 1.0
+   },
+   "tabdt_interval_hits": 9480,
+   "tabdt_interval_hits_by_between_factor": {
+    "1": 9480,
+    "1.25": 9480,
+    "1.5": 9480,
+    "2": 9480
+   }
+  },
+  {
+   "baseline_horizontal_peak": 3.48489880561828,
+   "bearing": "Bearing3_1",
+   "calibrated_drift_variance": 8.899987630080507e-06,
+   "calibrated_health_drift": 0.002472312583176436,
+   "calibrated_process_variance": 0.001544251806458548,
+   "calibrated_residual_between_variance": 0.04884292128583518,
+   "calibrated_residual_variance": 0.09556542611552646,
+   "calibrated_residual_within_variance": 0.03451177450823249,
+   "calibration_bearings": [
+    "Bearing3_2",
+    "Bearing3_3",
+    "Bearing3_4",
+    "Bearing3_5"
+   ],
+   "condition": 3,
+   "eligible_long_life_sensitivity": true,
+   "evaluation_count": 71040,
+   "predictive_between_bearing_factor": 1.25,
+   "records": 2538,
+   "rmse_percentage_points": {
+    "B2": 58.60059385914068,
+    "B3": 58.60059385914068,
+    "TABDT": 55.492161198727665
+   },
+   "squared_error": {
+    "B2": 24395.346282974664,
+    "B3": 24395.346282974664,
+    "TABDT": 21875.915196807608
+   },
+   "tabdt_interval_coverage": 0.5674831081081081,
+   "tabdt_interval_coverage_by_between_factor": {
+    "1": 0.5255912162162162,
+    "1.25": 0.5674831081081081,
+    "1.5": 0.6090653153153153,
+    "2": 0.6860501126126126
+   },
+   "tabdt_interval_hits": 40314,
+   "tabdt_interval_hits_by_between_factor": {
+    "1": 37338,
+    "1.25": 40314,
+    "1.5": 43268,
+    "2": 48737
+   }
+  },
+  {
+   "baseline_horizontal_peak": 2.72803306579589,
+   "bearing": "Bearing3_2",
+   "calibrated_drift_variance": 1.5237012458812687e-05,
+   "calibrated_health_drift": 0.00328474028805973,
+   "calibrated_process_variance": 0.0007796284834384,
+   "calibrated_residual_between_variance": 0.09561271726786176,
+   "calibrated_residual_variance": 0.15489164711300132,
+   "calibrated_residual_within_variance": 0.035375750528174134,
+   "calibration_bearings": [
+    "Bearing3_1",
+    "Bearing3_3",
+    "Bearing3_4",
+    "Bearing3_5"
+   ],
+   "condition": 3,
+   "eligible_long_life_sensitivity": true,
+   "evaluation_count": 69880,
+   "predictive_between_bearing_factor": 1.25,
+   "records": 2496,
+   "rmse_percentage_points": {
+    "B2": 46.96782580436067,
+    "B3": 47.21158958574991,
+    "TABDT": 42.98561700748939
+   },
+   "squared_error": {
+    "B2": 15415.364905591912,
+    "B3": 15575.792128198469,
+    "TABDT": 12912.169727367755
+   },
+   "tabdt_interval_coverage": 0.9727103606182026,
+   "tabdt_interval_coverage_by_between_factor": {
+    "1": 0.9065111619919862,
+    "1.25": 0.9727103606182026,
+    "1.5": 0.9943760732684602,
+    "2": 0.9998139668002289
+   },
+   "tabdt_interval_hits": 67973,
+   "tabdt_interval_hits_by_between_factor": {
+    "1": 63347,
+    "1.25": 67973,
+    "1.5": 69487,
+    "2": 69867
+   }
+  },
+  {
+   "baseline_horizontal_peak": 3.48489880561828,
+   "bearing": "Bearing3_3",
+   "calibrated_drift_variance": 9.906576072536092e-06,
+   "calibrated_health_drift": 0.001975236329787887,
+   "calibrated_process_variance": 0.0011224786433240363,
+   "calibrated_residual_between_variance": 0.04884815861949077,
+   "calibrated_residual_variance": 0.09546032344790825,
+   "calibrated_residual_within_variance": 0.03440012517354479,
+   "calibration_bearings": [
+    "Bearing3_1",
+    "Bearing3_2",
+    "Bearing3_4",
+    "Bearing3_5"
+   ],
+   "condition": 3,
+   "eligible_long_life_sensitivity": true,
+   "evaluation_count": 10400,
+   "predictive_between_bearing_factor": 1.25,
+   "records": 371,
+   "rmse_percentage_points": {
+    "B2": 58.62155308831804,
+    "B3": 58.62155308831804,
+    "TABDT": 56.12289549889717
+   },
+   "squared_error": {
+    "B2": 3573.94594594595,
+    "B3": 3573.94594594595,
+    "TABDT": 3275.770575147338
+   },
+   "tabdt_interval_coverage": 0.5425,
+   "tabdt_interval_coverage_by_between_factor": {
+    "1": 0.4939423076923077,
+    "1.25": 0.5425,
+    "1.5": 0.5821153846153846,
+    "2": 0.6613461538461538
+   },
+   "tabdt_interval_hits": 5642,
+   "tabdt_interval_hits_by_between_factor": {
+    "1": 5137,
+    "1.25": 5642,
+    "1.5": 6054,
+    "2": 6878
+   }
+  },
+  {
+   "baseline_horizontal_peak": 2.72803306579589,
+   "bearing": "Bearing3_4",
+   "calibrated_drift_variance": 1.5719660276870044e-05,
+   "calibrated_health_drift": 0.0032192891790030374,
+   "calibrated_process_variance": 0.0020042349767261085,
+   "calibrated_residual_between_variance": 0.08687497429768261,
+   "calibrated_residual_variance": 0.14225124353587054,
+   "calibrated_residual_within_variance": 0.03365752566376727,
+   "calibration_bearings": [
+    "Bearing3_1",
+    "Bearing3_2",
+    "Bearing3_3",
+    "Bearing3_5"
+   ],
+   "condition": 3,
+   "eligible_long_life_sensitivity": true,
+   "evaluation_count": 42400,
+   "predictive_between_bearing_factor": 1.25,
+   "records": 1515,
+   "rmse_percentage_points": {
+    "B2": 58.49482980692681,
+    "B3": 58.52733425528959,
+    "TABDT": 54.42553778546838
+   },
+   "squared_error": {
+    "B2": 14507.77528395925,
+    "B3": 14523.903145328872,
+    "TABDT": 12559.470052126771
+   },
+   "tabdt_interval_coverage": 0.7615094339622641,
+   "tabdt_interval_coverage_by_between_factor": {
+    "1": 0.6942216981132076,
+    "1.25": 0.7615094339622641,
+    "1.5": 0.819504716981132,
+    "2": 0.9165330188679245
+   },
+   "tabdt_interval_hits": 32288,
+   "tabdt_interval_hits_by_between_factor": {
+    "1": 29435,
+    "1.25": 32288,
+    "1.5": 34747,
+    "2": 38861
+   }
+  },
+  {
+   "baseline_horizontal_peak": 3.08300852775573,
+   "bearing": "Bearing3_5",
+   "calibrated_drift_variance": 1.4228641667096292e-06,
+   "calibrated_health_drift": 0.001034730928241986,
+   "calibrated_process_variance": 0.0013468787637024849,
+   "calibrated_residual_between_variance": 0.0022211819869403958,
+   "calibrated_residual_variance": 0.042083248681624,
+   "calibrated_residual_within_variance": 0.0393067711979485,
+   "calibration_bearings": [
+    "Bearing3_1",
+    "Bearing3_2",
+    "Bearing3_3",
+    "Bearing3_4"
+   ],
+   "condition": 3,
+   "eligible_long_life_sensitivity": true,
+   "evaluation_count": 3160,
+   "predictive_between_bearing_factor": 1.25,
+   "records": 114,
+   "rmse_percentage_points": {
+    "B2": 16.579025281316813,
+    "B3": 34.21811495561616,
+    "TABDT": 15.519142399430038
+   },
+   "squared_error": {
+    "B2": 86.8570490520193,
+    "B3": 369.99788759258087,
+    "TABDT": 76.10663473715674
+   },
+   "tabdt_interval_coverage": 0.9987341772151899,
+   "tabdt_interval_coverage_by_between_factor": {
+    "1": 0.9987341772151899,
+    "1.25": 0.9987341772151899,
+    "1.5": 0.9990506329113924,
+    "2": 0.9996835443037975
+   },
+   "tabdt_interval_hits": 3156,
+   "tabdt_interval_hits_by_between_factor": {
+    "1": 3156,
+    "1.25": 3156,
+    "1.5": 3157,
+    "2": 3159
+   }
+  }
+ ],
+ "dataset": {
+  "archive_name": "XJTU-SY_Bearing_Datasets.zip",
+  "archive_sha256": "3cc815649a315ac7da202980c489f33db44ca2db0317bbe3bcb9dcf415375e10",
+  "bearings": 15,
+  "channels": 2,
+  "feature": "peak absolute amplitude",
+  "feature_channel": "horizontal vibration",
+  "name": "XJTU-SY Bearing Datasets",
+  "records": 9216,
+  "samples_per_record": 32768
+ },
+ "long_life_sensitivity": {
+  "bearings": 13,
+  "evaluation_count": 255200,
+  "excluded_short_bearings": [
+   "Bearing1_5",
+   "Bearing2_4"
+  ],
+  "minimum_records": 100,
+  "rmse_percentage_points": {
+   "B2": 52.15853979174936,
+   "B3": 53.0121640604137,
+   "TABDT": 47.77151598918267
+  },
+  "tabdt_interval_coverage_percent": 76.71434169278997
+ },
+ "primary": {
+  "bearings": 15,
+  "evaluation_count": 257720,
+  "paired_cluster_bootstrap_95_ci": {
+   "B2_minus_TABDT": [
+    3.5928647597651446,
+    6.724055794581663
+   ],
+   "B2_to_TABDT": [
+    6.575689516712496,
+    14.263278591964903
+   ],
+   "B3_minus_TABDT": [
+    4.123063214453991,
+    9.563677366829575
+   ],
+   "B3_to_TABDT": [
+    7.4243168123484065,
+    19.355150257325963
+   ]
+  },
+  "relative_reduction_percent": {
+   "versus_B2": 8.459594646298443,
+   "versus_B3": 10.031544656499703
+  },
+  "rmse_cluster_bootstrap_95_ci": {
+   "B2": [
+    44.337120095234674,
+    56.58578674994189
+   ],
+   "B3": [
+    46.665358549894364,
+    57.14865642147926
+   ],
+   "TABDT": [
+    38.43163880072818,
+    52.503908114460174
+   ]
+  },
+  "rmse_percentage_points": {
+   "B2": 52.10898596698442,
+   "B3": 53.01944642459298,
+   "TABDT": 47.700776979881
+  },
+  "tabdt_interval_coverage_percent": 76.87024677945057,
+  "tabdt_interval_coverage_sensitivity_percent": {
+   "1": 72.37816234673289,
+   "1.25": 76.87024677945057,
+   "1.5": 79.93364892130995,
+   "2": 84.54873506130684
+  },
+  "tabdt_nominal_interval_percent": 90.0
+ },
+ "protocol": {
+  "base_seed": 183,
+  "baseline_definition": "median first-record peak of four calibration bearings",
+  "bootstrap_repetitions": 20000,
+  "bootstrap_seed": 20260806,
+  "bootstrap_unit": "bearing",
+  "calibration": "leave one bearing out within operating condition",
+  "delivery_deadline_records": 30,
+  "evaluation_life_fraction": [
+   0.2,
+   0.9
+  ],
+  "health_definition": "tenfold condition-baseline proxy: clip((horizontal_peak/baseline)-1)/9 to [0,1.2]",
+  "interval_sensitivity_between_factors": [
+   1.0,
+   1.25,
+   1.5,
+   2.0
+  ],
+  "minimum_records_long_life_sensitivity": 100,
+  "network_probability_timely": 0.02,
+  "network_repetitions_per_bearing": 40,
+  "predictive_between_bearing_variance_factor": 1.25,
+  "predictive_factor_derivation": "1 + 1/m for a new bearing versus the mean of m=4 calibration bearings",
+  "primary_bearings": "all 15 physical bearings",
+  "training_bearings_per_fold": 4
+ }
+}

@@ -1,0 +1,1094 @@
+% =============================================================================
+% Trust and Age Bayesian Digital Twins for Network Impaired Predictive
+% Maintenance in Industrial Cyber-Physical Systems
+% Target: IEEE Transactions on Industrial Cyber-Physical Systems (TICPS)
+% Compile: pdflatex main.tex (three times)
+% =============================================================================
+\documentclass[journal]{IEEEtran}
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{orcidlink}
+\usepackage{url}
+\graphicspath{{figs/}}
+\setlength{\textfloatsep}{5pt plus 8pt minus 1pt}
+\setlength{\floatsep}{4pt plus 8pt minus 1pt}
+\setlength{\dbltextfloatsep}{5pt plus 8pt minus 1pt}
+\setlength{\dblfloatsep}{4pt plus 8pt minus 1pt}
+\setlength{\intextsep}{5pt plus 8pt minus 1pt}
+\hypersetup{
+  pdftitle={Trust and Age Bayesian Digital Twins: Provable Predictive Maintenance under Industrial Network Impairments},
+  pdfauthor={Yassir Amin Ahmed Al-Karawi, Hamed Al-Raweshidy},
+  pdfsubject={Network-aware digital twins for predictive maintenance},
+  pdfkeywords={digital twin, predictive maintenance, industrial cyber-physical systems, remaining useful life, uncertainty quantification}
+}
+
+\floatstyle{ruled}
+\newfloat{algorithm}{tbp}{loa}
+\floatname{algorithm}{Algorithm}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{proposition}{Proposition}
+\newtheorem{assumption}{Assumption}
+\newtheorem{remark}{Remark}
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\rul}{\mathrm{RUL}}
+\newcommand{\Pb}{\bar{P}}
+
+\begin{document}
+
+\title{Trust and Age Bayesian Digital Twins: Provable Predictive Maintenance
+under Industrial Network Impairments}
+
+\author{Yassir~Amin~Ahmed~Al-Karawi\,\orcidlink{0000-0003-2959-3893},
+Hamed~Al-Raweshidy\,\orcidlink{0000-0002-3702-8192}%
+\thanks{Y. A. A. Al-Karawi is with the Department of Communications
+Engineering, College of Engineering, University of Diyala, Baqubah, Diyala,
+Iraq (e-mail: yassir.alkarawi@uodiyala.edu.iq).}%
+\thanks{H. Al-Raweshidy is with the Wireless Networks and Communications
+Centre, Department of Electronic and Electrical Engineering, College of
+Engineering, Design and Physical Sciences, Brunel University London,
+Uxbridge UB8 3PH, U.K. (e-mail: hamed.al-raweshidy@brunel.ac.uk).
+Corresponding author: Hamed Al-Raweshidy.}}
+
+\markboth{IEEE Transactions on Industrial Cyber-Physical Systems}%
+{Al-Karawi and Al-Raweshidy: Trust and Age Bayesian Digital Twins}
+
+\maketitle
+
+\begin{abstract}
+Digital twin predictive maintenance often assumes synchronous, homogeneous
+measurements, although industrial packets may be delayed, reordered, or
+dropped. This paper develops TABDT, a trust and age Bayesian twin for
+remaining useful life (RUL) prediction under geometric delays with a finite
+deadline and heterogeneous sensor credibility. Arrived packets are
+aligned in time and weighted by credibility and age before fusion with a
+random-effects Wiener model. The known-drift scalar anchor limit yields a closed-form
+steady-state variance bound, two RUL-error scaling regimes, and sufficient
+conditions for a unique certificate scaled maintenance limit that moves
+earlier as synchronization worsens. Experiments over 400 simulated units
+validate the bound within 1.3\% and reduce RUL root-mean-square error (RMSE)
+by up to 27.9\%. An external age-compensation test on all 15 XJTU-SY
+run-to-failure bearings lowers normalized RUL RMSE from 52.11 and 53.02 to
+47.70 percentage points.
+Simulation interval coverage is 93.4\% to 95.6\%, but external coverage is
+76.9\%, exposing model mismatch rather than claiming field calibration.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Digital twin, predictive maintenance, industrial cyber-physical systems,
+remaining useful life, Kalman filtering, age of information, uncertainty
+quantification, Wiener process.
+\end{IEEEkeywords}
+
+\IEEEpeerreviewmaketitle
+
+\section{Introduction}
+\IEEEPARstart{I}{ndustrial} cyber-physical systems (ICPS) often combine sensing,
+networking, computing, and control for physical assets. Their value increasingly
+depends on predicting RUL before an
+expensive unplanned failure~\cite{liu2024ticps,zhang2024ticps}. Digital twins
+(DTs) support this task by fusing streaming condition-monitoring data with a
+degradation model~\cite{tao2019}. Recent DT-based predictive-maintenance (PdM)
+studies use synchronized interfaces and homogeneous observation
+models~\cite{samanazari2024ticps,kumar2025ticps}, while trustworthy artificial
+intelligence (AI) remains central to deployment~\cite{zhang2024ticps}.
+
+Plant networks violate that premise: packets are delayed, reordered, or
+dropped, while retrofitted sensors differ in calibration and provenance. A
+twin that treats an old measurement as current can therefore become
+confidently wrong. Network-oriented DT architectures already identify the
+communication loop as part of the virtual replica~\cite{alkarawi2026dt}.
+They do not, however, quantify how ordinary delay and loss propagate into a
+first-passage RUL decision. Risk frameworks emphasize input quality,
+robustness, uncertainty measurement, and monitoring~\cite{nist2023}.
+Statistical calibration must be tested against observed errors
+~\cite{ding2024tim}. Average accuracy alone is insufficient when network
+degradation invalidates stated confidence.
+
+Intermittent Kalman filtering characterizes estimation under packet
+loss~\cite{sinopoli2004}, and age of information (AoI) methods quantify
+staleness~\cite{yates2021}. Communication and analytics codesign has reached
+condition-based maintenance (CBM)~\cite{ahmad2023jiot}, and secure fusion
+addresses unreliable measurements~\cite{yang2022jiot}. Neither supplies
+first-passage uncertainty under packet age, loss, and calibrated sensor
+precision.
+Consequently, existing work does not jointly provide
+\emph{(G1)} an anchor network-to-RUL certificate, \emph{(G2)} principled use of delayed
+data, and \emph{(G3)} heterogeneous sensor credibility.
+
+This paper closes that junction with four contributions. \emph{C1)} It
+formulates Bayesian RUL prediction for a random-effects Wiener process
+sensed over geometric delays with finite deadlines. \emph{C2)} TABDT compensates an
+arrived packet for the degradation missed in transit and assigns the
+variance-matched weight
+$w_s(a)=\tau_s/(1+\tau_s aQ/R)$. \emph{C3)} In the known-drift scalar anchor
+limit, Theorem~\ref{thm:bound} gives $\Pb(p)$.
+Corollary~\ref{cor:regimes} identifies $p^{-1/4}$ and extreme-loss $p^{-1/2}$
+RUL-error scaling, and Proposition~\ref{prop:threshold} maps the certificate
+to a unique maintenance limit that is monotone with network quality. This
+scope is distinct from the approximate delayed-data recursion in TABDT.
+\emph{C4)} Common-random-number experiments over 400 units validate the bound
+within 1.3\% and show up to 27.9\% lower RUL RMSE. A single-channel XJTU-SY
+test retains measured degradation, perturbs only packet delivery, and
+confirms significant point-error gains while revealing interval
+undercoverage. Code and raw results accompany the
+manuscript.
+
+\section{Related Work}\label{sec:related}
+
+\emph{A. Digital twins for predictive maintenance:}
+TICPS studies use DT data for bearing diagnosis~\cite{feng2023ticps}, partial
+transfer learning~\cite{samanazari2024ticps}, and state-space predictive health
+assessment~\cite{kumar2025ticps}. Its PHM survey centres RUL and maintenance
+decisions~\cite{liu2024ticps}. None propagates packet age and sensor
+credibility into a first-passage RUL posterior. A random-effects Wiener model retains
+inverse Gaussian RUL, unit heterogeneity, and analytic tractability
+~\cite{si2014,huang2015,zhai2017}.
+
+\emph{B. Imperfect networks and information ageing:}
+Filtering over lossy links provides covariance theory~\cite{sinopoli2004}.
+AoI and out-of-sequence measurement (OOSM) methods describe staleness and
+delayed updates~\cite{yates2021,barshalom2002,barshalom2004}. Asynchronous Bayesian
+filtering adapts noise for each source~\cite{greiff2024cdc}, whereas correlated
+fading makes mean reception probability insufficient under bursty links
+~\cite{quevedo2013tac}. These strands do not connect network quality jointly to
+first-passage RUL and the asymmetric-cost rule used in prognosis-centred
+CBM~\cite{yang2024tr}.
+Table~\ref{tab:related} locates TABDT at this missing junction, not as a
+new degradation law or filter.
+
+\begin{table*}[!t]
+\centering
+\caption{Positioning Relative to Prior Work}
+\label{tab:related}
+\scriptsize
+\setlength{\tabcolsep}{2.7pt}
+\renewcommand{\arraystretch}{0.96}
+\begin{tabular}{>{\raggedright\arraybackslash}p{2.55cm}
+                >{\raggedright\arraybackslash}p{3.35cm}
+                >{\raggedright\arraybackslash}p{3.05cm}
+                >{\raggedright\arraybackslash}p{3.55cm}
+                >{\raggedright\arraybackslash}p{4.10cm}}
+\toprule
+Study / model & Primary prognostic role & Network treatment & Uncertainty and
+sensor credibility & Decision or guarantee \\
+\midrule
+State space DT health assessment~\cite{kumar2025ticps} & Synchronized virtual
+replica and predictive health assessment & Data acquisition in real time is
+assumed & Model and plant similarity without age dependent sensor credibility &
+Experimental condition monitoring without an anchor network-to-RUL error law \\
+DT transfer diagnosis~\cite{samanazari2024ticps,feng2023ticps} &
+Training data generated by a DT and fault diagnosis across domains & Packet delay,
+reordering, and deadline loss are not modelled & Domain discrepancy is
+learned without a provenance score $\tau_s$ or stale-packet covariance & Empirical
+diagnosis without a control limit informed by the network \\
+Adaptive Wiener RUL~\cite{zhai2017} & Stochastic degradation and online RUL
+prediction with adaptive drift & Measurements are available to the estimator
+without an explicit network & Random degradation and parameter uncertainty
+with a homogeneous observation channel & Probabilistic RUL without a synchronization
+certificate or PM rule \\
+Intermittent Kalman filtering~\cite{sinopoli2004} & State
+estimation over lossy links & Bernoulli packet arrival or loss & Error-covariance analysis for intermittent observations & Stability and covariance theory without
+first-passage RUL or maintenance economics \\
+AoI and OOSM methods~\cite{yates2021,barshalom2002} & Quantify information age
+or update delayed tracking measurements & Explicit information age and
+arrival outside sequence & State update that accounts for delay while sensor provenance is
+outside scope & Timeliness or tracking correction without a DT and PdM decision chain \\
+\textbf{TABDT (this work)} & \textbf{Bayesian RUL prediction and preventive
+maintenance} & \textbf{Geometric age, reordering, and finite delivery
+deadline} & \textbf{Joint trust and age weight $w_s(a)$ with decomposed RUL
+variance $\sigma_{\rul,t}^2$} & \textbf{Closed form $\Pb(p)$, two scaling
+regimes, and $\xi^*(p)$ that is monotone with network quality} \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\section{System Model and Problem Statement}\label{sec:model}
+
+\subsection{Degradation Process}
+A fleet of nominally identical assets is considered, with a gas-compressor bearing as the running example. Its health index (HI) $x(t)\in\R$ degrades
+according to a Wiener process with random drift,
+\begin{equation}\label{eq:wiener}
+\begin{aligned}
+x(t)&=x_0+\mu t+\sigma_B B(t),\\
+\mu&\sim\mathcal{TN}_{[\mu_{\min},\infty)}
+\!\bigl(\bar\mu,\sigma_{\mu0}^{2}\bigr),\qquad \mu_{\min}>0.
+\end{aligned}
+\end{equation}
+where $B(t)$ is standard Brownian motion, $\sigma_B$ is the diffusion
+coefficient, and $\mathcal{TN}$ denotes a lower-truncated normal parameterized
+here by the mean and variance of its untruncated parent normal. The positive lower support
+ensures a proper first-passage model. The random effect on $\mu$ captures
+variability across units caused by manufacturing and load heterogeneity, as is standard in the Wiener
+prognostics literature~\cite{si2014,huang2015,zhai2017}. The asset fails when the
+HI first crosses a threshold $D$. The failure time
+$T_f=\inf\{t:x(t)\geq D\}$ then follows, conditionally on $\mu$, an
+inverse Gaussian (IG) law with mean $(D-x_0)/\mu$ and shape
+$(D-x_0)^2/\sigma_B^{2}$~\cite{si2014}. The true RUL at time $t$ is
+$\rul_t = T_f - t$. Sampling at interval $\Delta t$ and writing
+$x_k=x(k\Delta t)$ gives the discrete state-space form
+\begin{equation}\label{eq:ss}
+\mathbf{z}_{k+1}=A\,\mathbf{z}_k+\mathbf{w}_k,\quad
+\mathbf{z}_k=\begin{bmatrix}x_k\\ \mu_k\end{bmatrix},\quad
+A=\begin{bmatrix}1 & \Delta t\\ 0 & 1\end{bmatrix},
+\end{equation}
+with $\mathbf{w}_k\sim\mathcal{N}(\mathbf{0},\mathrm{diag}(Q,q_\mu))$,
+$Q=\sigma_B^{2}\Delta t$, and $q_\mu$ a small drift random walk that lets the
+filter track slow load changes.
+
+\subsection{Sensing and Network Model}
+$S$ condition-monitoring sensors observe the HI,
+\begin{equation}\label{eq:meas}
+y_k^{(s)}=x_k+v_k^{(s)},\qquad
+v_k^{(s)}\sim\mathcal{N}\!\bigl(0,\,R/\tau_s\bigr),\quad s=1,\dots,S.
+\end{equation}
+Here $R$ is nominal measurement variance and $\tau_s\in(0,1]$ is a dimensionless precision
+score. Equation~\eqref{eq:meas} is the proposed variance calibration map, not a NIST
+result. The value $\tau_s=1$ gives nominal variance and lower scores inflate it. From
+held out filter innovations $r_i^{(s)}$, one can estimate
+$\widehat V_s=\max\{\epsilon_R,N_s^{-1}\sum_i[(r_i^{(s)})^2-
+HP_i^-H^\top]\}$ and set
+$\tau_s=\operatorname{clip}(R/\widehat V_s,\tau_{\min},1)$. Provenance may
+regularize this score, consistent with data quality monitoring~\cite{nist2023}
+and robust downweighting of unreliable channels~\cite{yang2022jiot}. This
+synthetic study specifies $\tau_s$ rather than learning it online.
+
+The packet carrying $y_k^{(s)}$ traverses the plant network with raw delay
+$A_k^{(s)}$ (equivalently, its age on arrival~\cite{yates2021}),
+\begin{equation}\label{eq:delay}
+A_k^{(s)}\sim\mathrm{Geom}_0(p),\qquad
+a_k^{(s)}=A_k^{(s)}\ \text{if }A_k^{(s)}\leq a_{\max},
+\end{equation}
+and is dropped otherwise. Thus $p=\Prob\{A=0\}$ is the \emph{timely
+synchronization probability}, while the deadline-loss probability is
+$(1-p)^{a_{\max}+1}$. Delays are independent across packets in the present
+model and can reorder them, so the twin receives a genuine
+OOSM stream~\cite{barshalom2002,barshalom2004}. The limit
+$p\to1$ recovers synchronous sensing. Small $p$ represents congestion or
+repeated medium-access deferral.
+
+Writing $q=1-p$ and $M=a_{\max}$, the delivered mass and its conditional
+mean age follow directly from the truncated geometric series:
+\begin{equation}\label{eq:agemoments}
+\begin{aligned}
+P_{\mathrm{del}}(p)&=\sum_{a=0}^{M}pq^a=1-q^{M+1},\\
+\bar a_{\mathrm{del}}(p)&=\E[A\mid A\leq M]
+=\frac{q[1-(M+1)q^M+Mq^{M+1}]}{p(1-q^{M+1})}.
+\end{aligned}
+\end{equation}
+Equation~\eqref{eq:agemoments} separates two network penalties that have
+different statistical effects. The term $1-P_{\mathrm{del}}$ removes information,
+whereas $\bar a_{\mathrm{del}}$ makes the information that does arrive stale.
+
+\subsection{Problem Statement}
+At every step $k$ the twin must deliver (i)~a point RUL estimate
+$\widehat{\rul}_k$, (ii)~a nominal $(1-\alpha)$ approximate prediction
+interval, and
+(iii)~a preventive maintenance (PM) trigger, using only packets that have
+physically arrived. Two questions follow. What accuracy can be
+\emph{guaranteed} as a function of $p$, and how should stale or
+low-credibility data be used so that they help rather than mislead? Table~
+\ref{tab:notation} collects the notation.
+
+\begin{table}[!t]
+\centering
+\caption{Principal Notation}
+\label{tab:notation}
+\begin{tabular}{ll}
+\toprule
+Symbol & Meaning \\
+\midrule
+$x_k$, $D$ & health index at step $k$, failure threshold \\
+$\mu$, $\bar\mu$, $\sigma_{\mu0}$ & unit drift, fleet mean, heterogeneity \\
+$\sigma_B$, $Q$ & diffusion coefficient and process variance $\sigma_B^2\Delta t$ \\
+$y_k^{(s)}$, $R$, $\tau_s$ & measurement, nominal variance, sensor precision \\
+$a_k^{(s)}$, $p$, $q$, $a_{\max}$ & packet age, on time probability, $1-p$, deadline \\
+$w_s(a)$, $\eta^{*}$ & trust and age weight with $\eta^{*}=Q/R$ \\
+$P_{\mathrm{del}}$ & probability of delivery before the deadline \\
+$\hat{\mathbf z}_k$, $P_k$ & state estimate and error covariance \\
+$\Pb(p)$ & steady-state variance bound (Thm.~\ref{thm:bound}) \\
+$\xi$, $\xi^{*}$ & PM control limit and its optimum (Prop.~\ref{prop:threshold}) \\
+$c_p$, $c_f$ & preventive / failure replacement cost \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{The TABDT Framework}\label{sec:framework}
+
+Fig.~\ref{fig:arch} shows the architecture. Three design decisions define
+TABDT, and each answers one of the gaps G1 to G3.
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.87\textwidth]{fig1_architecture}
+\caption{TABDT architecture. Timestamped observations undergo random age,
+reordering, and deadline loss. Age compensation, covariance informed by trust and age, and
+Bayesian fusion yield state and RUL posteriors. The anchor certificate
+$\Pb(p)$ sets the maintenance limit $\xi^*(p)$.}
+\label{fig:arch}
+\end{figure*}
+
+\subsection{Age Compensation with Trust and Age Weighting}
+A packet $(y_k^{(s)},k,s)$ arriving at step $t$ with age $a=t-k$ measures
+the \emph{past} state $x_{k}$, which relates to the current state through
+$x_t=x_k+\mu a\Delta t+\nu_{k:t}$, where
+$\nu_{k:t}=\sum_{j=k+1}^{t}\varepsilon_j\sim\mathcal N(0,aQ)$. After
+shifting the packet by the estimated drift, its residual with respect to the
+current state is
+\begin{equation}\label{eq:residual}
+\tilde y-H\mathbf z_t
+=v_k^{(s)}-\nu_{k:t}+a\Delta t(\hat\mu_t-\mu),
+\qquad H=[1\;0].
+\end{equation}
+Exact OOSM retrodiction retains covariance between state and measurement and
+between packets~\cite{barshalom2002,barshalom2004}. TABDT instead freezes
+the current drift during a forward shift and neglects shared process noise
+correlations. Under this first-order conditional-independence approximation,
+\eqref{eq:residual} has marginal variance
+\begin{equation}\label{eq:reff}
+R_{s,a}^{\mathrm{eff}}
+=\frac{R}{\tau_s}+aQ+(a\Delta t)^2[P_t]_{\mu\mu}.
+\end{equation}
+This motivates shifting the measurement by missed degradation and charging
+the retained marginal uncertainties to its likelihood:
+\begin{align}
+\tilde{y} &= y_k^{(s)}+\hat{\mu}_t\,a\Delta t, \label{eq:agecomp}\\
+\tilde{R} &= \frac{R}{w}\;+\;(a\Delta t)^{2}\,[P_t]_{\mu\mu},
+\qquad w=w_s(a)=\frac{\tau_s}{1+\tau_s\eta a}. \label{eq:weight}
+\end{align}
+Sequential use of \eqref{eq:agecomp} and \eqref{eq:weight} is therefore
+approximate, not the exact delayed data posterior. Sensitivity and coverage
+tests expose the practical effect of omitted correlations. Trust $\tau_s$
+sets variance for a fresh packet, while age $a$ reduces delayed information. Because
+$R/w_s(a)=R/\tau_s+\eta aR$, the choice
+\begin{equation}\label{eq:etastar}
+\eta^{*}=Q/R
+\end{equation}
+makes $R/w_s(a)=R/\tau_s+aQ$, the sensor variance plus Wiener variance accrued
+in transit. Thus the age rate is the ratio of process variance to measurement variance,
+with monotonicity
+\begin{equation}\label{eq:weightderivatives}
+\frac{\partial w_s}{\partial a}
+=-\frac{\tau_s^2\eta}{(1+\tau_s\eta a)^2}<0,
+\qquad
+\frac{\partial w_s}{\partial\tau_s}
+=\frac{1}{(1+\tau_s\eta a)^2}>0.
+\end{equation}
+Section~\ref{sec:results} examines this ratio over four orders of
+magnitude. The additive term in \eqref{eq:weight} charges uncertainty in drift
+estimation. Omitting it overweights aged packets while drift is poorly known.
+
+Each packet delivered within the deadline is used exactly once on arrival.
+Replaying a stored value would count the same information twice.
+
+\subsection{Bayesian Recursion}
+With \eqref{eq:agecomp} and \eqref{eq:weight}, the twin runs a sequential
+Kalman recursion on the state \eqref{eq:ss}. A time update occurs at every step,
+followed by one scalar measurement update per arriving packet with
+observation matrix $H=[1\;\,0]$, constructed measurement $\tilde y$, and noise
+$\tilde R$. Algorithm~\ref{alg:tabdt} lists the complete procedure. The
+prior on the drift, $\hat\mu_0=\bar\mu$ with variance $\sigma_{\mu0}^{2}$,
+is a moment-matched Gaussian approximation to the lower-truncated fleet
+random effect in~\eqref{eq:wiener}. The recursion therefore performs drift learning for each unit in the sense
+of~\cite{zhai2017} as a consequence of ordinary filtering.
+
+\begin{algorithm}[!t]
+\caption{Trust and age Bayesian recursion at time $t$}
+\label{alg:tabdt}
+\scriptsize
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{@{}r@{\ }p{0.89\columnwidth}@{}}
+\toprule
+\multicolumn{2}{@{}>{\raggedright\arraybackslash}p{0.98\columnwidth}@{}}{\textbf{Require:} posterior
+$(\hat{\mathbf z}_{t-1},P_{t-1})$, unused arrived packets
+$\mathcal A_t$, and $Q,q_\mu,R,\{\tau_s\},\eta^{*}$}\\
+\multicolumn{2}{@{}>{\raggedright\arraybackslash}p{0.98\columnwidth}@{}}{\textbf{Invariant:} each packet is fused once, in
+nondecreasing age $a=t-k$ (newest first).}\\
+\midrule
+1: & \textbf{Predict:}
+$\hat{\mathbf z}\leftarrow A\hat{\mathbf z}_{t-1}$,
+$P\leftarrow AP_{t-1}A^\top+\mathrm{diag}(Q,q_\mu)$.\\
+2: & Sort $\mathcal A_t$ by $(a,s)$. \textbf{For each}
+$(y_k^{(s)},k,s)\in\mathcal A_t$ \textbf{do}\\
+3: & \quad $a\leftarrow t-k$ and
+$w\leftarrow\tau_s/(1+\tau_s\eta^{*}a)$.\\
+4: & \quad $\tilde y\leftarrow y_k^{(s)}+\hat\mu a\Delta t$ and
+$\tilde R\leftarrow R/w+(a\Delta t)^2P_{\mu\mu}$.\\
+5: & \quad $K\leftarrow PH^\top(HPH^\top+\tilde R)^{-1}$ and
+$e\leftarrow\tilde y-H\hat{\mathbf z}$.\\
+6: & \quad $\hat{\mathbf z}\leftarrow\hat{\mathbf z}+Ke$,
+$J\leftarrow I-KH$, and
+$P\leftarrow JPJ^\top+K\tilde R K^\top$.\\
+7: & \textbf{End for}. Symmetrize $P\leftarrow(P+P^\top)/2$.\\
+8: & Evaluate \eqref{eq:rulmean} through \eqref{eq:rulvar}. Set
+$u_t\leftarrow\mathbf 1\{\hat x_t\geq\xi^*(p)\}$.\\
+\midrule
+\multicolumn{2}{@{}>{\raggedright\arraybackslash}p{0.98\columnwidth}@{}}{\textbf{Ensure:} $\hat{\mathbf z}_t,P_t$,
+$\widehat{\rul}_t\pm z_{1-\alpha/2}\sigma_{\rul,t}$, and PM flag $u_t$.}\\
+\bottomrule
+\end{tabular}
+\end{algorithm}
+
+\subsection{RUL Posterior}
+Given $\hat{\mathbf z}_t=[\hat x_t,\hat\mu_t]^{\top}$ and $P_t$, let
+$m_t=\max(D-\hat x_t,\epsilon_x)$ and
+$\hat\mu_t^+=\max(\hat\mu_t,\epsilon_\mu)$. Drift is locally frozen beyond
+$t$. This treatment is exact for $q_\mu=0$ and approximate for the slow random
+walk in \eqref{eq:ss}. Then the first-passage RUL
+$L_t=T_f-t$ has the inverse Gaussian density
+\begin{equation}\label{eq:igdensity}
+f_{L_t\mid x_t,\mu}(\ell)
+=\frac{D-x_t}{\sqrt{2\pi\sigma_B^2\ell^3}}
+\exp\!\left[-\frac{(D-x_t-\mu\ell)^2}
+{2\sigma_B^2\ell}\right],\quad \ell>0.
+\end{equation}
+Equation~\eqref{eq:igdensity} has conditional mean $(D-x_t)/\mu$ and variance
+$(D-x_t)\sigma_B^2/\mu^3$. The point estimate is therefore the conditional
+mean evaluated at the posterior estimates,
+\begin{equation}\label{eq:rulmean}
+\widehat{\rul}_t=\frac{m_t}{\hat\mu_t^+}.
+\end{equation}
+For $g(x,\mu)=(D-x)/\mu$, the gradient at the posterior mean is
+\begin{equation}\label{eq:rulgradient}
+\nabla g_t=
+\begin{bmatrix}-(\hat\mu_t^+)^{-1}&
+-m_t(\hat\mu_t^+)^{-2}\end{bmatrix}^{\!\top}.
+\end{equation}
+Applying the law of total variance and the first-order delta method gives
+\begin{equation}\label{eq:totalvariance}
+\operatorname{Var}(L_t\mid\mathcal Y_t)
+\approx \E[\operatorname{Var}(L_t\mid\mathbf z_t)\mid\mathcal Y_t]
++\nabla g_t^\top P_t\nabla g_t.
+\end{equation}
+Substituting \eqref{eq:rulgradient} into \eqref{eq:totalvariance} separates
+the aleatoric first-passage part and the epistemic
+state-estimation part~\cite{si2014}:
+\begin{equation}\label{eq:rulvar}
+\sigma_{\rul,t}^{2}
+\approx\underbrace{\frac{m_t\sigma_B^{2}}{(\hat\mu_t^+)^{3}}}_{\text{aleatoric (IG)}}
++\underbrace{\frac{[P_t]_{xx}}{(\hat\mu_t^+)^{2}}
++\frac{m_t^2[P_t]_{\mu\mu}}{(\hat\mu_t^+)^{4}}
++\frac{2m_t[P_t]_{x\mu}}{(\hat\mu_t^+)^{3}}}_{\text{epistemic (delta method)}} .
+\end{equation}
+The nominal Gaussian delta-method interval is
+$\widehat{\rul}_t\pm z_{1-\alpha/2}\sigma_{\rul,t}$. It is not an exact
+Bayesian credible interval because \eqref{eq:rulvar} plugs in the expected
+aleatoric term and omits higher posterior moments. Calibration must therefore
+be tested~\cite{ding2024tim}. The expansion retains the covariance between
+state and drift required by the delta method.
+Theorem~\ref{thm:bound} bounds the $[P_t]_{xx}$
+contribution for the anchor-filter limit stated next. It does not claim to
+bound the OOSM approximation with unknown drift in Algorithm~\ref{alg:tabdt}.
+
+\section{Theoretical Guarantees}\label{sec:theory}
+
+\subsection{A Closed-Form Variance Certificate}
+For analysis, an anchor with unit trust uses the known-drift scalar case, retaining
+fresh packets and omitting delayed ones. This reference is independent of
+Algorithm~\ref{alg:tabdt}'s OOSM approximation. Let $P_k$ denote the
+prior variance one step ahead for this intermittent Kalman filter, which
+receives a fresh measurement with probability $p$ per
+step~\cite{sinopoli2004}. Its Riccati recursion is
+\begin{equation}\label{eq:riccati}
+P_{k+1}=P_k+Q-\gamma_k\,\frac{P_k^{2}}{P_k+R},
+\qquad \gamma_k\sim\mathrm{Bern}(p).
+\end{equation}
+
+\begin{theorem}[Steady state variance bound]\label{thm:bound}
+For the marginally stable degradation dynamics \eqref{eq:ss} observed
+through \eqref{eq:riccati} with any $p\in(0,1]$,
+\begin{equation}\label{eq:bound}
+\limsup_{k\to\infty}\E[P_k]\;\leq\;
+\Pb(p)\;=\;\frac{Q+\sqrt{Q^{2}+4pQR}}{2p}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Write $g(P)=P^{2}/(P+R)$. Since $g''(P)=2R^{2}/(P+R)^{3}>0$, $g$ is convex
+on $[0,\infty)$, and Jensen's inequality gives
+$\E[g(P_k)]\geq g(\E[P_k])$. Taking expectations of \eqref{eq:riccati},
+\[
+\E[P_{k+1}]=\E[P_k]+Q-p\,\E[g(P_k)]\;\leq\;f\bigl(\E[P_k]\bigr),
+\]
+with $f(u)=u+Q-p\,g(u)$. Because
+$g'(u)=(u^{2}+2uR)/(u+R)^{2}\in[0,1)$, the derivative $f'(u)\in(1-p,1]$.
+Hence $f$ is nondecreasing, and the comparison sequence $u_{k+1}=f(u_k)$,
+$u_0=\E[P_0]$, dominates $\E[P_k]$ for all $k$. The fixed points of $f$
+solve $Q=p\,g(u)$, i.e., $p u^{2}-Qu-QR=0$, whose unique positive root is
+$\Pb(p)$ in \eqref{eq:bound}. Since $f(u)-u=Q-p\,g(u)$ is positive below
+$\Pb(p)$ and negative above it, and $f$ is monotone, $u_k\to\Pb(p)$ from
+any initialization, which yields the claim.
+\end{proof}
+
+Implicit differentiation of $p\Pb^2=Q(\Pb+R)$ gives
+\begin{equation}\label{eq:boundmonotonicity}
+\frac{d\Pb}{dp}=-\frac{\Pb^2}{2p\Pb-Q}
+=-\frac{\Pb^2}{\sqrt{Q^2+4pQR}}<0.
+\end{equation}
+Thus \eqref{eq:boundmonotonicity} proves that the certificate worsens strictly
+as synchronization probability falls.
+
+\begin{corollary}[Two network scaling regimes]\label{cor:regimes}
+For the known-drift anchor filter, let $\delta=Q/(pR)$. If
+$\delta\to0$ (equivalently, $p\gg Q/R$), then
+\begin{equation}\label{eq:quarter}
+\begin{aligned}
+\Pb(p)&=\sqrt{\frac{QR}{p}}\,[1+O(\!\sqrt\delta)],\\
+\sigma_{\rul}^{\mathrm{epi}}&\lesssim
+\frac{(QR)^{1/4}}{\mu}p^{-1/4}[1+O(\!\sqrt\delta)].
+\end{aligned}
+\end{equation}
+In the extreme-loss limit $pR/Q\to0$,
+\begin{equation}\label{eq:halfpow}
+\Pb(p)=\frac{Q}{p}+R+O\!\left(\frac{pR^2}{Q}\right),\qquad
+\sigma_{\rul}^{\mathrm{epi}}\lesssim\frac{\sqrt Q}{\mu}p^{-1/2}.
+\end{equation}
+\end{corollary}
+
+Here $Q/R=9\times10^{-4}$, whereas the evaluated range has $p\geq0.02$, so
+$\delta\leq0.045$ and \eqref{eq:quarter} is the relevant approximation.
+Within that regime, halving $p$ increases the leading epistemic RUL scale by
+$2^{1/4}-1\approx18.9\%$. The true $p\to0$ exponent is nevertheless $-1/2$ by
+\eqref{eq:halfpow}. TABDT can perform better by exploiting delayed packets.
+The anchor result supplies only a network scale reference for the surrogate
+below.
+
+\subsection{Maintenance Threshold Informed by the Network}
+The certificate becomes operational when it prices maintenance risk.
+Consider the classical control-limit policy~\cite{yang2024tr}:
+replace preventively (cost $c_p$) when the \emph{estimate} $\hat x$ crosses
+$\xi<D$. An undetected crossing of $D$ before the trigger costs
+$c_f>c_p$. Let $e_k=x_k-\hat x_k$ denote the zero-mean anchor-filter error.
+An unnoticed failure requires $e_k$ to exceed the safety margin $m=D-\xi$.
+Theorem~\ref{thm:bound} gives the distribution-free Cantelli bound
+\begin{equation}\label{eq:cantelli}
+\limsup_{k\to\infty}\Prob\{e_k\geq m\}
+\leq \frac{\Pb(p)}{\Pb(p)+m^2},\qquad m>0.
+\end{equation}
+Because variance alone does not imply a Gaussian tail, a smooth Gaussian
+surrogate that can be tested by simulation is defined as
+\begin{equation}\label{eq:cost}
+C_G(\xi,p)\;\triangleq\;\Bigl[c_p+(c_f-c_p)\,
+\bar\Phi\!\Bigl(\tfrac{D-\xi}{\sqrt{\Pb(p)}}\Bigr)\Bigr]\,
+\frac{\mu}{\xi},
+\end{equation}
+where $\bar\Phi$ and $\phi$ are the standard normal tail and density. The
+factors approximate risk from a late trigger and renewal frequency, respectively.
+\eqref{eq:cost} is not a probabilistic upper bound, unlike \eqref{eq:cantelli}.
+
+\begin{proposition}[Unique control limit and network monotonicity]\label{prop:threshold}
+Let $s=\sqrt{\Pb(p)}$ and $d=c_f-c_p>0$. If
+\begin{equation}\label{eq:interiorcondition}
+\frac{Dd}{s\sqrt{2\pi}}>\frac{c_f+c_p}{2},
+\end{equation}
+the surrogate \eqref{eq:cost} has a unique interior minimizer
+$\xi^{*}\in(0,D)$ characterized by
+\begin{equation}\label{eq:foc}
+(c_f-c_p)\,\frac{\xi^{*}}{\sqrt{\Pb(p)}}\,
+\phi\!\Bigl(\tfrac{D-\xi^{*}}{\sqrt{\Pb(p)}}\Bigr)
+= c_p+(c_f-c_p)\,\bar\Phi\!\Bigl(\tfrac{D-\xi^{*}}{\sqrt{\Pb(p)}}\Bigr).
+\end{equation}
+Let $r^*=(D-\xi^*)/s$. Wherever $(r^*)^2\xi^*>D$, the safety margin
+$D-\xi^*$ is strictly increasing in $s$ and hence nonincreasing in $p$.
+\end{proposition}
+
+\begin{proof}
+Write $h(\xi)=c_p+d\bar\Phi((D-\xi)/s)$, so $C_G'(\xi,p)$ has the sign of
+$F(\xi)=\xi h'(\xi)-h(\xi)$. Here $F(0)<0$, condition
+\eqref{eq:interiorcondition} is exactly $F(D)>0$, and
+$F'(\xi)=\xi h''(\xi)>0$ for $0<\xi<D$. Hence the root is unique and gives
+\eqref{eq:foc}. Implicit differentiation of \eqref{eq:foc} yields
+$d(D-\xi^*)/ds=r^*-D/(r^*\xi^*)$, which is positive under the stated
+condition. Finally, $s$ decreases with $p$ by \eqref{eq:bound}.
+\end{proof}
+
+Equation \eqref{eq:cost} uses a Gaussian tail and a first-order renewal scale and
+ignores diffusion overshoot near $D$. Section~\ref{sec:results} tests these
+approximations. Define the stationary point
+residual $F_p(\xi)=\xi h'(\xi)-h(\xi)$ from the proof of
+Proposition~\ref{prop:threshold}. Because $F_p$ is strictly increasing when
+\eqref{eq:interiorcondition} holds, Algorithm~\ref{alg:threshold} uses a
+bracketed root solve rather than an unconstrained optimizer. The returned
+solution therefore inherits the uniqueness guarantee.
+
+\begin{algorithm}[!t]
+\caption{PM threshold informed by the network}
+\label{alg:threshold}
+\scriptsize
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{@{}r@{\ }p{0.88\columnwidth}@{}}
+\toprule
+\multicolumn{2}{@{}l}{\textbf{Require:} $p,Q,R,D,\mu,c_p,c_f$ and
+root tolerance $\epsilon>0$.}\\
+\midrule
+1: & $\Pb\leftarrow(Q+\sqrt{Q^2+4pQR})/(2p)$,
+$s\leftarrow\sqrt{\Pb}$, and $d\leftarrow c_f-c_p$.\\
+2: & $h(\xi)\leftarrow c_p+d\bar\Phi((D-\xi)/s)$ and
+$F_p(\xi)\leftarrow\xi d\phi((D-\xi)/s)/s-h(\xi)$.\\
+3: & \textbf{if} $F_p(D)\leq0$ \textbf{then} compare the admissible boundary
+costs and return the boundary with lower cost.\\
+4: & \textbf{else} solve $F_p(\xi)=0$ on $(0,D)$ by a safeguarded bracketed
+method (bisection/Brent) until the bracket width is at most $\epsilon$.\\
+5: & Set $\xi^*$ to the bracketed root. Evaluate $C_G(\xi^*,p)$ from
+\eqref{eq:cost}.\\
+\midrule
+\multicolumn{2}{@{}l}{\textbf{Ensure:} unique $\xi^*(p)$ when
+\eqref{eq:interiorcondition} holds and surrogate cost $C_G(\xi^*,p)$.}\\
+\bottomrule
+\end{tabular}
+\end{algorithm}
+
+\subsection{Computational Complexity}
+Let $m_t=|\mathcal A_t|$. One step of Algorithm~\ref{alg:tabdt} costs
+$O(n^3+m_tn^2+m_t\log m_t)$ operations and $O(n^2+m_t)$ memory. In steady
+state $\E[m_t]=SP_{\mathrm{del}}\leq S$, whereas the deadline gives
+$m_t\leq S(a_{\max}+1)$. Hence $O(Sn^2)$ for fixed $n=2$ is expected, not a
+worst-batch bound. Algorithm~\ref{alg:threshold} is one
+$O(\log(D/\epsilon))$ solve. This
+count is not a claim about operation in real time. Platform latency and
+energy still require profiling.
+
+\section{Numerical Study}\label{sec:results}
+
+\subsection{Setup and Physics Validation}
+Table~\ref{tab:params} specifies a slow gas-compressor bearing degradation
+process ($\bar\mu=0.02$ HI/h, mean life
+$D/\bar\mu=500$ h) monitored by $S=3$ sensors of unequal trust through a
+network. The probability $p$ is varied from 0.02 under harsh conditions to
+1.0 under ideal conditions. At $p=0.02$ and $a_{\max}=100$, the implied deadline-loss probability
+is 13.0\%. Before any comparison, the simulator itself was validated against
+the closed-form result. Over 20\,000 paths with fixed drift, the empirical mean failure time
+was 501.3 h against the IG value of 500.0 h, and the empirical standard
+deviation 33.6 h against 33.5 h. This physics based check is treated as a
+precondition for trusting everything that follows.
+
+\begin{table}[!t]
+\centering
+\caption{Simulation Configuration}
+\label{tab:params}
+\begin{tabular}{llll}
+\toprule
+Parameter & Value & Parameter & Value \\
+\midrule
+$\Delta t$ & 1 h & $D$ & 10 HI \\
+$\bar\mu$ & 0.02 HI/h & $\sigma_{\mu0}$ & 0.004 HI/h \\
+$\mu_{\min}$ & 0.01 HI/h & $P_0$ & $\mathrm{diag}(0.25,\sigma_{\mu0}^2)$ \\
+$\sigma_B$ & 0.03 HI/$\sqrt{\mathrm{h}}$ & $Q$ & $9\times10^{-4}$ \\
+$R$ & 1.0 & $(\tau_1,\tau_2,\tau_3)$ & $(1.0,\,0.7,\,0.4)$ \\
+$q_\mu$ & $10^{-7}$ & $\eta^{*}=Q/R$ & $9\times10^{-4}$ \\
+$a_{\max}$ & 100 steps & $(c_p,c_f)$ & $(1,\,10)$ \\
+Monte Carlo units & 400 & eval.\ window & $[0.2,\,0.9]\,T_f$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Baselines and Metrics}
+Four estimators share identical truths, noises, and packet realizations,
+differing only in how packets enter the update:
+\emph{B1} is the open-loop twin with only the model, fleet-mean drift, and no data.
+\emph{B2} is a deliberately naive ablation that applies every arriving
+packet as if its age were zero and is not asserted to represent all DT
+implementations.
+\emph{B3} is the intermittent Kalman filter that uses only packets arriving on
+time and discards the rest, namely the policy characterized by
+Theorem~\ref{thm:bound}~\cite{sinopoli2004}. \emph{TABDT} is
+Algorithm~\ref{alg:tabdt}. The reported measures are RUL RMSE and the 90\%
+coverage probability of the prediction interval (PICP) over the
+$[20\%,90\%]$ life window of each unit. The same truths, normal measurement
+draws, and delay uniforms obtained through the inverse CDF are reused across
+all $p$ values. Vertical error bars are $\pm1.96$ standard errors across units.
+For the evaluation index set
+$\mathcal I=\{(n,k):0.2T_f^{(n)}\leq k\Delta t\leq0.9T_f^{(n)}\}$, the two
+reported metrics are
+\begin{equation}\label{eq:metrics}
+\begin{aligned}
+e_{n,k}&=\widehat{\rul}_{n,k}-\rul_{n,k},\\
+\mathrm{RMSE}_{\rul}
+&=\left[|\mathcal I|^{-1}\!\sum_{(n,k)\in\mathcal I}e_{n,k}^{2}\right]^{1/2},\\
+\mathrm{PICP}_{0.9}
+&=|\mathcal I|^{-1}\!\sum_{(n,k)\in\mathcal I}
+\mathbf 1\!\left\{|e_{n,k}|\leq1.645\,\sigma_{\rul,n,k}\right\}.
+\end{aligned}
+\end{equation}
+Thus $\mathrm{RMSE}_{\rul}$ measures point accuracy, whereas
+$\mathrm{PICP}_{0.9}$ tests whether the uncertainty decomposition in
+\eqref{eq:rulvar} attains its stated empirical coverage.
+
+\subsection{Results}
+
+\emph{1) What the twin sees:}
+Fig.~\ref{fig:traj} shows a single unit at $p=0.4$. Timely arrivals are
+sparse, the estimate coasts between updates, and the RUL posterior
+contracts toward the truth as drift learning proceeds, with paired 90\%
+limits from \eqref{eq:rulvar}.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{fig2_trajectories}
+\caption{One realization at $p=0.4$. Top: true and estimated health index
+with paired $\pm2\sigma$ limits, failure threshold $D$, and packets arriving
+on time (rug marks). Bottom: true RUL against the TABDT estimate
+\eqref{eq:rulmean} with paired 90\% limits from \eqref{eq:rulvar}.}
+\label{fig:traj}
+\end{figure}
+
+\emph{2) Accuracy versus network quality:}
+Fig.~\ref{fig:rmse} is the central comparison and Table~\ref{tab:headline}
+extracts three operating points. All methods driven by data coincide at
+$p=1$ (54.0 h) because no delayed packet is available to distinguish their
+update rules. Common random numbers keep B1 exactly constant at 121.2 h, the price of
+never learning unit-specific drift. As $p$ falls, B3 pays for discarding usable
+packets. Its RMSE rises to 64.2 h at $p=0.05$ and 75.3 h at $p=0.02$. B2 is
+competitive under moderate delay but becomes biased under severe staleness,
+reaching 65.2 and 89.1 h at the same operating points. TABDT remains at
+58.3 h for $p=0.05$ and 64.3 h for $p=0.02$. Thus, at $p=0.02$, age
+compensation and trust and age weighting reduce RMSE by 14.7\% relative to
+B3 and 27.9\% relative to B2. At $p=0.05$, the reductions are 9.2\% and
+10.7\%. For $p\geq0.05$, TABDT remains between 54.0 h and 58.3 h, so a
+twentyfold drop in timely arrival costs 4.3 h here.
+
+Conditioned on delivery before $a_{\max}=100$, \eqref{eq:delay} gives a mean
+packet age of 33.9 steps at $p=0.02$. An update that treats stale data as fresh therefore omits,
+on average, $\bar\mu\,\E[a\mid a\leq a_{\max}]\Delta t\approx0.68$ HI of
+degradation, explaining the rapid B2 error increase. TABDT adds this missing
+drift through \eqref{eq:agecomp} and simultaneously charges the diffusion
+term $aQ$ and drift uncertainty $(a\Delta t)^2P_{\mu\mu}$ through
+\eqref{eq:weight}. B3 avoids the bias but sacrifices all delayed
+information.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{fig3_rmse_vs_p}
+\caption{RUL RMSE from \eqref{eq:metrics} against synchronization probability
+$p$ for packets arriving on time. The abscissa is logarithmic and vertical bars
+show 95\% confidence intervals over 400 units. All methods driven by data
+coincide at $p=1$. The annotation quantifies the gain of TABDT at $p=0.02$,
+where staleness and deadline loss are most severe.}
+\label{fig:rmse}
+\end{figure}
+
+\begin{table}[!t]
+\centering
+\caption{Headline Comparison at Three Network Conditions}
+\label{tab:headline}
+\setlength{\tabcolsep}{3.6pt}
+\begin{tabular}{lcccccc}
+\toprule
+& \multicolumn{2}{c}{$p=0.02$} & \multicolumn{2}{c}{$p=0.05$}
+& \multicolumn{2}{c}{$p=0.20$} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
+Method & RMSE & PICP & RMSE & PICP & RMSE & PICP \\
+& [h] & [\%] & [h] & [\%] & [h] & [\%] \\
+\midrule
+B1 open-loop      & 121.2 & 95.0 & 121.2 & 95.0 & 121.2 & 95.0 \\
+B2 stale-as-fresh & 89.1 & 91.5 & 65.2 & 97.0 & \textbf{55.0} & 96.4 \\
+B3 discard-stale  & 75.3 & 95.7 & 64.2 & 95.8 & 57.4 & 95.9 \\
+TABDT (proposed) & \textbf{64.3} & 93.4 & \textbf{58.3} & 94.5
+                  & 55.1 & 95.2 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\emph{3) Empirical interval coverage:}
+Fig.~\ref{fig:picp} evaluates the statistical calibration question emphasized
+in RUL uncertainty studies~\cite{ding2024tim}. With the full
+state and drift cross-covariance retained in \eqref{eq:rulvar}, none of the
+methods undercovers in this experiment. TABDT attains coverage between 93.4\% and 95.6\%,
+while B3 produces coverage between 95.5\% and 95.9\%. B2 is closest to nominal at the
+single harshest point (91.5\% at $p=0.02$) but overcovers by 5.6 to 7.2
+percentage points elsewhere. These intervals are therefore conservative, not
+perfectly calibrated, and the point RMSE gain in Fig.~\ref{fig:rmse} should
+not be read as exact posterior calibration.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{fig4_picp}
+\caption{Empirical coverage $\mathrm{PICP}_{0.9}$ from \eqref{eq:metrics}.
+The abscissa is logarithmic and vertical bars show 95\% confidence intervals
+across units. The dashed line is the nominal 90\% target. TABDT remains
+conservative from 93.4\% to 95.6\%.}
+\label{fig:picp}
+\end{figure}
+
+\emph{4) Tightness of the certificate:}
+Fig.~\ref{fig:thm} confronts Theorem~\ref{thm:bound} with Monte Carlo estimates
+from 4\,000 paths for the steady-state prior variance and the actual
+mean square estimation error. The bound holds at every $p$ and is remarkably
+tight. The ratio $\Pb(p)/\E[P]$ ranges from
+1.000 at $p=1$ to 1.013 at $p=0.05$, so the Jensen slack in the proof
+costs at most 1.3\% in this regime. The dotted $\sqrt{QR/p}$ line confirms
+the moderate-loss slope of $-1/2$ for the variance over the evaluated range.
+It is not the $p\to0$ asymptote, where \eqref{eq:halfpow} predicts slope
+$-1$ below the crossover $p\approx Q/R$.
+Proposition~\ref{prop:threshold} uses the exact bound.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{fig5_theorem1}
+\caption{Validation of Theorem~\ref{thm:bound}. The closed-form bound
+$\Pb(p)$ exceeds both the empirical prior variance and the empirical
+MSE at every $p$, with at most 1.3\% slack, and follows the
+$\sqrt{QR/p}$ moderate-loss approximation over this range.}
+\label{fig:thm}
+\end{figure}
+
+\emph{5) Sensitivity and external run-to-failure validation:}
+The prespecified $\eta/\eta^*$ sweep changes RMSE by at most 6.5\%. At
+$\eta/\eta^*=1$ versus 100, errors are 54.7 versus 51.2 h at $p=0.05$,
+with smaller shifts at $p=0.2$ and 0.5.
+
+A single-channel XJTU-SY test uses 15 bearing lives under three operating
+conditions~\cite{wang2020xjtu}. The shared causal proxy
+$\operatorname{clip}[(\mathrm{peak}/b-1)/9,0,1.2]$ maps a condition baseline
+$b$ to zero and $10b$ to one. It is a normalization, not a failure label.
+Within-condition leave-one-bearing-out calibration uses $m=4$ lives and
+residual variance $s_w^2+(1+1/m)s_b^2$. Thus 1.25 is derived for a new bearing
+relative to the calibration mean, not tuned to coverage. Forty common packet
+realizations use $p=0.02$ and a 30-record deadline. All 15 lives form the
+primary aggregate. The original protocol prespecified the $\geq100$-record
+cohort (13 lives), retained here as sensitivity. Between arrivals, TABDT
+coasts on calibrated drift, whereas B2 and B3 hold their last accepted value.
+
+Fig.~\ref{fig:xjtu} gives normalized RUL RMSE. TABDT reaches 47.70 points,
+versus 52.11 when delayed records are treated as current and 53.02 when they
+are discarded, reductions of 8.5\% and 10.0\%. Bearing-clustered paired 95\%
+bootstrap intervals are 3.59 to 6.72 and 4.12 to 9.56 points, excluding zero.
+The 13-life sensitivity returns 47.77, 52.16, and 53.01 points, with 76.7\%
+coverage. The nominal 90\% interval covers 76.9\% over all 15 lives, while
+factors 1 to 2 give 72.4\% to 84.5\% in the primary aggregate.
+Thus point error supports age compensation, but not field calibration.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.95\columnwidth]{fig6_xjtu}
+\caption{External XJTU-SY age-compensation test at $p=0.02$. Bars are 95\% cluster-bootstrap intervals over 15 bearings. Network repetitions are not treated as
+independent specimens.}
+\label{fig:xjtu}
+\end{figure}
+
+\emph{6) Stress beyond the design assumptions:}
+Fig.~\ref{fig:stress} reports two checks on the same 400-unit
+population. A
+two-state Markov link at timely fraction 0.05 with mean outages of 20 to
+80 steps preserves the method ordering under bursts that the iid
+certificate does not cover~\cite{quevedo2013tac}. Exact reprocessing
+gives the exact posterior that the forward correction approximates, and
+TABDT exceeds it by 11.9\% at $p=0.02$, 0.9\% at $p=0.2$, and zero at
+$p=1$, versus $O(Stn^2)$ work per evaluation at time $t$. TABDT has the online
+cost stated above.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{fig8_stress}
+\caption{Stress tests. Left: RUL RMSE under a two-state Markov link at
+timely fraction 0.05 as the mean outage lengthens, with common channel
+uniforms (95\% confidence intervals, delivered fractions below). Right:
+TABDT RMSE excess over exact reprocessing of all arrived packets on a
+common 25-step grid.}
+\label{fig:stress}
+\end{figure}
+
+\emph{7) From certificate to maintenance decisions:}
+Fig.~\ref{fig:cost} closes the loop from network quality to money. The
+surrogate \eqref{eq:cost} with $\Pb(p)$ from Theorem~\ref{thm:bound} is
+plotted against $\xi$ for three network conditions and overlaid with
+independent Monte Carlo policy simulations. Three observations. First, analytic and simulated cost rates
+agree within 0.6\% for sampled points with $\xi\leq9.0$. Second, it degrades exactly where the
+derivation predicts. Near $D$, diffusion overshoot ignored by
+\eqref{eq:cost} raises the simulated rate by 7.3\% at $(p,\xi)=(0.2,9.5)$. The
+design rule should not be trusted for margins thinner than
+$\sqrt{\Pb(p)}$, which the certificate supplies. Third, the surrogate
+optimum moves with the network as Proposition~\ref{prop:threshold}
+requires:
+$\xi^{*}=9.42$ at $p=0.9$, $9.34$ at $p=0.5$, and $9.18$ at $p=0.2$. The safety margin
+widens from 0.58 to 0.82 HI and the minimum cost rises from $2.135$ to
+$2.197\times10^{-3}$ per hour. Both sufficient
+conditions of Proposition~\ref{prop:threshold} hold at these points
+(smallest $(r^*)^2\xi^*$ 88.5 against $D=10$).
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{fig7_cost}
+\caption{Long run maintenance cost rate against the PM limit $\xi$.
+Lines show \eqref{eq:cost}, circles show independent Monte Carlo results, and
+stars mark $\xi^{*}$. Poorer synchronization moves $\xi^{*}$ toward earlier
+maintenance. Approximation error is largest near $D$.}
+\label{fig:cost}
+\end{figure}
+
+\subsection{Threats to Validity and Limitations}
+Theorem~\ref{thm:bound} covers linear Gaussian Wiener degradation with
+independent delays, and the Markov-outage test probes that boundary only
+empirically~\cite{quevedo2013tac}. The main study is synthetic with fixed
+$\tau_s$. XJTU-SY tests only the injected packet-use rule on one peak index
+from 15 accelerated lives. The forward
+OOSM correction omits correlations retained by exact retrodiction
+~\cite{barshalom2002,barshalom2004}, and its measured excess over exact
+reprocessing is empirical, not proven. Frozen-drift intervals cover only
+76.9\% externally, \eqref{eq:cost} remains a design surrogate, and
+correlated fading, nonlinear degradation, edge profiling, and plant
+trials remain open.
+
+\section{Conclusion}\label{sec:conclusion}
+TABDT aligns network-impaired packets, encodes trust and age in covariance,
+and propagates uncertainty through $\Pb(p)$ to the maintenance threshold.
+Simulation places the bound within 1.3\%, with up to 27.9\% lower RUL
+RMSE and 93.4\% to 95.6\% coverage. The 15-life XJTU-SY test reaches 47.70 points versus 52.11 and 53.02,
+with 76.9\% coverage exposing calibration limits for plant trials.
+
+\begin{thebibliography}{22}
+
+\bibitem{liu2024ticps}
+R. Liu, Q. Zhang, T. Han, B. Yang, W. Zhang, S. Yin, and D. Zhou, ``Survey on
+foundation models for prognostics and health management in industrial
+cyber-physical systems,'' \emph{IEEE Trans. Ind. Cyber-Phys. Syst.}, vol. 2,
+pp. 264--280, 2024, doi:
+\href{https://doi.org/10.1109/TICPS.2024.3425326}{10.1109/TICPS.2024.3425326}.
+
+\bibitem{zhang2024ticps}
+J. Zhang, J. Tian, H. Luo, S. Wu, S. Yin, and O. Kaynak, ``Prognostics for
+the sustainability of industrial cyber-physical systems: From an artificial
+intelligence perspective,'' \emph{IEEE Trans. Ind. Cyber-Phys. Syst.}, vol. 2,
+pp. 495--507, 2024, doi:
+\href{https://doi.org/10.1109/TICPS.2024.3433492}{10.1109/TICPS.2024.3433492}.
+
+\bibitem{tao2019}
+F. Tao, H. Zhang, A. Liu, and A. Y. C. Nee, ``Digital twin in industry:
+State-of-the-art,'' \emph{IEEE Trans. Ind. Informat.}, vol. 15, no. 4, pp.
+2405--2415, Apr. 2019, doi:
+\href{https://doi.org/10.1109/TII.2018.2873186}{10.1109/TII.2018.2873186}.
+
+\bibitem{samanazari2024ticps}
+M. S. Azari, L. Ricci, S. Santini, and F. Flammini, ``An intelligent
+diagnostic framework based on digital twins and partial transfer learning:
+Methodology and industrial application,'' \emph{IEEE Trans. Ind. Cyber-Phys.
+Syst.}, vol. 3, pp. 1--13, 2025, doi:
+\href{https://doi.org/10.1109/TICPS.2024.3490502}{10.1109/TICPS.2024.3490502}.
+
+\bibitem{kumar2025ticps}
+A. Kumar and N. Kumar, ``State-space driven digital twin for condition
+monitoring and predictive health assessment in grid-integrated power converter
+system,'' \emph{IEEE Trans. Ind. Cyber-Phys. Syst.}, vol. 3, pp. 464--471,
+2025, doi:
+\href{https://doi.org/10.1109/TICPS.2025.3586823}{10.1109/TICPS.2025.3586823}.
+
+\bibitem{alkarawi2026dt}
+Y. Al-Karawi, H. S. Mogheer, K. K. Hasan, and A. H. Dawwd, ``Digital twin
+and native-AI empowered 6G networks: Architectures, applications, evaluation,
+and open challenges,'' in \emph{Proc. Int. Russian Smart Industry Conf.
+(SmartIndustryCon)}, 2026, pp. 13--20, doi:
+\href{https://doi.org/10.1109/SmartIndustryCon68821.2026.11493034}{10.1109/SmartIndustryCon68821.2026.11493034}.
+
+\bibitem{nist2023}
+E. Tabassi, \emph{Artificial Intelligence Risk Management Framework (AI RMF
+1.0)}, NIST AI 100-1, National Institute of Standards and Technology,
+Gaithersburg, MD, USA, 2023, doi:
+\href{https://doi.org/10.6028/NIST.AI.100-1}{10.6028/NIST.AI.100-1}.
+
+\bibitem{ding2024tim}
+Z.-Q. Ding, Q. Qin, Y.-F. Zhang, and Y.-H. Lin, ``An uncertainty
+quantification and calibration framework for RUL prediction and accuracy
+improvement,'' \emph{IEEE Trans. Instrum. Meas.}, vol. 73, Art. no. 2535613,
+pp. 1--13, 2024, doi:
+\href{https://doi.org/10.1109/TIM.2024.3485392}{10.1109/TIM.2024.3485392}.
+
+\bibitem{sinopoli2004}
+B. Sinopoli, L. Schenato, M. Franceschetti, K. Poolla, M. I. Jordan, and
+S. S. Sastry, ``Kalman filtering with intermittent observations,''
+\emph{IEEE Trans. Autom. Control}, vol. 49, no. 9, pp. 1453--1464, Sep.
+2004, doi:
+\href{https://doi.org/10.1109/TAC.2004.834121}{10.1109/TAC.2004.834121}.
+
+\bibitem{yates2021}
+R. D. Yates, Y. Sun, D. R. Brown, S. K. Kaul, E. Modiano, and S. Ulukus,
+``Age of information: An introduction and survey,'' \emph{IEEE J. Sel.
+Areas Commun.}, vol. 39, no. 5, pp. 1183--1210, May 2021, doi:
+\href{https://doi.org/10.1109/JSAC.2021.3065072}{10.1109/JSAC.2021.3065072}.
+
+\bibitem{ahmad2023jiot}
+N. Ahmad, M. Egan, J.-M. Gorce, J. S. Dibangoye, and F. Le Mou\"el,
+``Codesigned communication and data analytics for condition-based maintenance
+in smart buildings,'' \emph{IEEE Internet Things J.}, vol. 10, no. 18, pp.
+15847--15856, Sep. 2023, doi:
+\href{https://doi.org/10.1109/JIOT.2023.3266029}{10.1109/JIOT.2023.3266029}.
+
+\bibitem{yang2022jiot}
+T. Yang and C. Lv, ``A secure sensor fusion framework for connected and
+automated vehicles under sensor attacks,'' \emph{IEEE Internet Things J.},
+vol. 9, no. 22, pp. 22357--22365, Nov. 2022, doi:
+\href{https://doi.org/10.1109/JIOT.2021.3101502}{10.1109/JIOT.2021.3101502}.
+
+\bibitem{feng2023ticps}
+K. Feng, Y. Xu, Y. Wang, S. Li, Q. Jiang, B. Sun, J. Zheng, and Q. Ni,
+``Digital twin enabled domain adversarial graph networks for bearing fault
+diagnosis,'' \emph{IEEE Trans. Ind. Cyber-Phys. Syst.}, vol. 1, pp. 113--122,
+2023, doi:
+\href{https://doi.org/10.1109/TICPS.2023.3298879}{10.1109/TICPS.2023.3298879}.
+
+\bibitem{si2014}
+X.-S. Si, W. Wang, C.-H. Hu, and D.-H. Zhou, ``Estimating remaining useful
+life with three-source variability in degradation modeling,'' \emph{IEEE
+Trans. Rel.}, vol. 63, no. 1, pp. 167--190, Mar. 2014, doi:
+\href{https://doi.org/10.1109/TR.2014.2299151}{10.1109/TR.2014.2299151}.
+
+\bibitem{huang2015}
+Z. Huang, Z. Xu, W. Wang, and Y. Sun, ``Remaining useful life prediction for
+a nonlinear heterogeneous Wiener process model with an adaptive drift,''
+\emph{IEEE Trans. Rel.}, vol. 64, no. 2, pp. 687--700, Jun. 2015, doi:
+\href{https://doi.org/10.1109/TR.2015.2403433}{10.1109/TR.2015.2403433}.
+
+\bibitem{zhai2017}
+Q. Zhai and Z.-S. Ye, ``RUL prediction of deteriorating products using an
+adaptive Wiener process model,'' \emph{IEEE Trans. Ind. Informat.}, vol.
+13, no. 6, pp. 2911--2921, Dec. 2017, doi:
+\href{https://doi.org/10.1109/TII.2017.2684821}{10.1109/TII.2017.2684821}.
+
+\bibitem{barshalom2002}
+Y. Bar-Shalom, ``Update with out-of-sequence measurements in tracking:
+Exact solution,'' \emph{IEEE Trans. Aerosp. Electron. Syst.}, vol. 38, no.
+3, pp. 769--777, Jul. 2002, doi:
+\href{https://doi.org/10.1109/TAES.2002.1039398}{10.1109/TAES.2002.1039398}.
+
+\bibitem{barshalom2004}
+Y. Bar-Shalom, H. Chen, and M. Mallick, ``One-step solution for the multistep
+out-of-sequence-measurement problem in tracking,'' \emph{IEEE Trans. Aerosp.
+Electron. Syst.}, vol. 40, no. 1, pp. 27--37, Jan. 2004, doi:
+\href{https://doi.org/10.1109/TAES.2004.1292140}{10.1109/TAES.2004.1292140}.
+
+\bibitem{greiff2024cdc}
+M. Greiff and K. Berntorp, ``Asynchronous variational-Bayes Kalman
+filtering,'' in \emph{Proc. 63rd IEEE Conf. Decision Control (CDC)}, Milan,
+Italy, 2024, pp. 1987--1992, doi:
+\href{https://doi.org/10.1109/CDC56724.2024.10886035}{10.1109/CDC56724.2024.10886035}.
+
+\bibitem{quevedo2013tac}
+D. E. Quevedo, A. Ahl\'en, and K. H. Johansson, ``State estimation over
+sensor networks with correlated wireless fading channels,'' \emph{IEEE
+Trans. Autom. Control}, vol. 58, no. 3, pp. 581--593, Mar. 2013, doi:
+\href{https://doi.org/10.1109/TAC.2012.2212515}{10.1109/TAC.2012.2212515}.
+
+\bibitem{yang2024tr}
+L. Yang, Y. Chen, X. Ma, Q. Qiu, and R. Peng, ``A prognosis-centered
+intelligent maintenance optimization framework under uncertain failure
+threshold,'' \emph{IEEE Trans. Rel.}, vol. 73, no. 1, pp. 115--130, Mar.
+2024, doi:
+\href{https://doi.org/10.1109/TR.2023.3273082}{10.1109/TR.2023.3273082}.
+
+\bibitem{wang2020xjtu}
+B. Wang, Y. Lei, N. Li, and N. Li, ``A hybrid prognostics approach for
+estimating remaining useful life of rolling element bearings,''
+\emph{IEEE Trans. Rel.}, vol. 69, no. 1, pp. 401--412, Mar. 2020, doi:
+\href{https://doi.org/10.1109/TR.2018.2882682}{10.1109/TR.2018.2882682}.
+
+\end{thebibliography}
+
+\end{document}

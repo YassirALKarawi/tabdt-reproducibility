@@ -1,0 +1,37 @@
+cff-version: 1.2.0
+message: "If you use this software, figures, or results, please cite the accompanying manuscript."
+title: "TABDT reproducibility package"
+type: software
+version: "v19"
+date-released: 2026-08-09
+repository-code: "https://github.com/YassirALKarawi/tabdt-reproducibility"
+url: "https://github.com/YassirALKarawi/tabdt-reproducibility"
+abstract: >-
+  Deterministic simulation and external XJTU-SY validation package for trust
+  and age Bayesian digital twins used in predictive maintenance under delayed,
+  reordered, and dropped industrial packets.
+keywords:
+  - digital twin
+  - predictive maintenance
+  - remaining useful life
+  - industrial cyber-physical systems
+  - age of information
+  - uncertainty quantification
+authors:
+  - family-names: "Al-Karawi"
+    given-names: "Yassir Amin Ahmed"
+    orcid: "https://orcid.org/0000-0003-2959-3893"
+  - family-names: "Al-Raweshidy"
+    given-names: "Hamed"
+    orcid: "https://orcid.org/0000-0002-3702-8192"
+preferred-citation:
+  type: article
+  title: "Trust and Age Bayesian Digital Twins: Provable Predictive Maintenance under Industrial Network Impairments"
+  year: 2026
+  authors:
+    - family-names: "Al-Karawi"
+      given-names: "Yassir Amin Ahmed"
+      orcid: "https://orcid.org/0000-0003-2959-3893"
+    - family-names: "Al-Raweshidy"
+      given-names: "Hamed"
+      orcid: "https://orcid.org/0000-0002-3702-8192"

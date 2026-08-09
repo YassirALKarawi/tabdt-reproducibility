@@ -29,7 +29,7 @@ R_BASE  = 1.0          # nominal measurement-noise variance (trust = 1)
 TAUS    = np.array([1.0, 0.7, 0.4])   # sensor trust scores
 S       = len(TAUS)
 Q_MU    = 1e-7         # drift random-walk variance (filter model)
-MU0_HAT = 0.02         # fleet-mean prior drift
+MU0_HAT = 0.02         # parent-normal reference drift
 SIG_MU0 = 0.004        # unit-to-unit drift heterogeneity
 MU_MIN  = 0.01         # physical lower support for the random drift [HI/h]
 P0      = np.array([[0.25, 0.0], [0.0, SIG_MU0**2]])
@@ -373,12 +373,12 @@ def threshold_residual(xi, p, cp=1.0, cf=10.0):
 
 
 def optimal_threshold(p, cp=1.0, cf=10.0, tol=1e-10):
-    """Unique interior root when it exists; otherwise compare boundaries."""
+    """Return the interior root, or a strict-domain approximation to D."""
+    if not 0.0 < tol < D_FAIL:
+        raise ValueError("tol must lie strictly between zero and D_FAIL")
     lo = 1e-8
     if threshold_residual(D_FAIL, p, cp, cf) <= 0.0:
-        candidates = np.array([lo, D_FAIL])
-        costs = np.array([cost_rate_analytic(x, p, cp, cf) for x in candidates])
-        return float(candidates[np.argmin(costs)])
+        return float(D_FAIL - tol)
     return float(brentq(lambda x: threshold_residual(x, p, cp, cf),
                         lo, D_FAIL, xtol=tol, rtol=tol))
 

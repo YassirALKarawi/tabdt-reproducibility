@@ -11,7 +11,7 @@
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](requirements.txt)
 [![IEEE manuscript](https://img.shields.io/badge/IEEE-manuscript-00629B)](main.pdf)
 [![Target venue](https://img.shields.io/badge/target-IEEE_TICPS-5b2c83)](https://www.ieee-ies.org/pubs/transactions-on-industrial-cyberphysical-systems)
-[![External validation](https://img.shields.io/badge/XJTU--SY-15_bearings-b44964)](#external-xjtu-sy-validation)
+[![External test](https://img.shields.io/badge/XJTU--SY-15_bearings-b44964)](#external-xjtu-sy-validation)
 
 [**Read the manuscript**](main.pdf) · [**Archived release v19**](https://doi.org/10.5281/zenodo.21861066) · [**Browse the figures**](#paper-figures) · [**Reproduce the results**](#reproduce-the-results) · [**Cite the work**](#citation)
 
@@ -51,7 +51,7 @@ The framework connects estimation to maintenance through a closed-form network c
 1. **Age compensation** shifts each stale observation from its sampling time to the current decision time.
 2. **Trust–age fusion** reduces the influence of older packets and sensors with weaker credibility.
 3. **Bayesian posterior update** propagates state, drift, covariance, and first-passage RUL uncertainty.
-4. **Network-aware maintenance** maps the analytical certificate to an earlier maintenance limit as synchronization deteriorates.
+4. **Network-aware maintenance** uses the certificate in a surrogate cost model whose limit moves earlier under Proposition 1's sufficient conditions.
 
 ## Paper figures
 
@@ -78,14 +78,14 @@ Click any preview for the full-resolution PNG. Each **Vector PDF** link opens th
     </td>
     <td width="50%" valign="top">
       <a href="figs/fig5_theorem1.png"><img src="figs/fig5_theorem1.png" alt="Validation of the analytical network certificate" width="100%"></a><br>
-      <sub><b>Fig. 5 — Certificate validation.</b> The closed-form bound remains above empirical prior variance and MSE with at most 1.3% slack.</sub><br>
+      <sub><b>Fig. 5 — Certificate check.</b> At the evaluated probabilities, the closed-form bound remains above empirical prior variance and MSE with at most 1.3% slack.</sub><br>
       <a href="figs/fig5_theorem1.pdf">Vector PDF</a>
     </td>
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <a href="figs/fig6_xjtu.png"><img src="figs/fig6_xjtu.png" alt="External XJTU-SY validation results" width="100%"></a><br>
-      <sub><b>Fig. 6 — External XJTU-SY validation.</b> Cluster-bootstrap intervals over 15 bearings at <i>p</i> = 0.02.</sub><br>
+      <a href="figs/fig6_xjtu.png"><img src="figs/fig6_xjtu.png" alt="External XJTU-SY age-compensation test results" width="100%"></a><br>
+      <sub><b>Fig. 6 — External XJTU-SY age-compensation test.</b> Cluster-bootstrap intervals over 15 bearings at <i>p</i> = 0.02.</sub><br>
       <a href="figs/fig6_xjtu.pdf">Vector PDF</a>
     </td>
     <td width="50%" valign="top">
@@ -97,7 +97,7 @@ Click any preview for the full-resolution PNG. Each **Vector PDF** link opens th
   <tr>
     <td width="50%" valign="top">
       <a href="figs/fig7_cost.png"><img src="figs/fig7_cost.png" alt="Maintenance cost and preventive-maintenance limit" width="100%"></a><br>
-      <sub><b>Fig. 8 — Maintenance decision.</b> Poorer synchronization moves the optimal preventive-maintenance limit toward earlier intervention.</sub><br>
+      <sub><b>Fig. 8 — Maintenance decision.</b> Under Proposition 1's sufficient conditions, poorer synchronization moves the surrogate-optimal limit toward earlier intervention.</sub><br>
       <a href="figs/fig7_cost.pdf">Vector PDF</a>
     </td>
     <td width="50%" valign="top">
@@ -131,7 +131,7 @@ pdflatex main.tex
 
 <a id="external-xjtu-sy-validation"></a>
 
-### 2. External XJTU-SY validation
+### 2. External XJTU-SY age-compensation test
 
 Download the official `XJTU-SY_Bearing_Datasets.zip` archive from the dataset authors' public repository. Verify the archive before use:
 
@@ -157,7 +157,7 @@ The single-channel test holds a causal tenfold condition-baseline health-to-RUL 
 | [`main.pdf`](main.pdf) / [`main.tex`](main.tex) | Eight-page manuscript and LaTeX source |
 | [`tab_dt_simulation.py`](tab_dt_simulation.py) | Deterministic synthetic experiment |
 | [`results.json`](results.json) | Raw synthetic-study results |
-| [`xjtu_validation.py`](xjtu_validation.py) | Deterministic XJTU-SY external validation |
+| [`xjtu_validation.py`](xjtu_validation.py) | Deterministic XJTU-SY age-compensation test |
 | [`xjtu_results.json`](xjtu_results.json) | Bearing-level, repetition-level, and aggregate validation results |
 | [`figs/`](figs/) | Vector PDF figures and 400-dpi PNG previews |
 | [`XJTU_SHA256SUMS.txt`](XJTU_SHA256SUMS.txt) | Machine-checkable v19 integrity hashes |

@@ -17,7 +17,7 @@ regular submission to IEEE Transactions on Industrial Cyber-Physical Systems
 
 - eight-page IEEE double-column manuscript and LaTeX source;
 - deterministic synthetic simulator and machine-readable results;
-- external XJTU-SY validation over all 15 physical bearings;
+- external XJTU-SY age-compensation test over all 15 physical bearings;
 - vector PDF and 400-dpi PNG figures;
 - integrity hashes, citation metadata, and file-specific rights information.
 

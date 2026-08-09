@@ -1,0 +1,18 @@
+# LaTeX build products
+*.aux
+*.fdb_latexmk
+*.fls
+*.loa
+*.log
+*.out
+*.synctex.gz
+*.toc
+
+# Python caches
+__pycache__/
+*.py[cod]
+
+# External data and derived caches (not distributed)
+XJTU-SY_Bearing_Datasets.zip
+xjtu_cache/
+*.npz
